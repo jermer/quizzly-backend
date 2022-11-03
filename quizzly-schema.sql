@@ -16,11 +16,10 @@ CREATE TABLE quizzes (
 CREATE TABLE questions (
     id SERIAL PRIMARY KEY,
     q_text TEXT NOT NULL,
-    a1_text TEXT NOT NULL,
-    a2_text TEXT NOT NULL,
-    a3_text TEXT NOT NULL,
-    a4_text TEXT NOT NULL,
-    correct INTEGER NOT NULL,
+    right_a TEXT NOT NULL,
+    wrong_a1 TEXT NOT NULL,
+    wrong_a2 TEXT NOT NULL,
+    wrong_a3 TEXT NOT NULL,
     quiz_id INTEGER NOT NULL
       REFERENCES quizzes ON DELETE CASCADE
 );

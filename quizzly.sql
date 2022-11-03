@@ -5,8 +5,8 @@ DROP DATABASE quizzly;
 CREATE DATABASE quizzly;
 \connect quizzly
 
-\i jobly-schema.sql
-\i jobly-seed.sql
+\i quizzly-schema.sql
+\i quizzly-seed.sql
 
 \echo 'Delete and recreate quizzly_test db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
