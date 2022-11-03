@@ -1,17 +1,27 @@
 "use strict";
 
 const db = require("../db");
+const Quiz = require("../models/quiz");
+
+const quizIds = [];
 
 async function commonBeforeAll() {
     // clean up any existing data
     await db.query(`DELETE FROM quizzes`);
+    await db.query(`DELETE FROM questions`);
 
     // create some test quiz data
-    await db.query(`
-        INSERT INTO quizzes (id, title, description)
-        VALUES (111, 'quiz one', 'the first test quiz'),
-               (222, 'quiz two', 'the second test quiz')`
-    );
+    const q1 = await Quiz.create(
+        {
+            title: 'quiz one',
+            description: 'the first test quiz'
+        });
+    const q2 = await Quiz.create(
+        {
+            title: 'quiz two',
+            description: 'the second test quiz'
+        });
+    quizIds.push(q1.id, q2.id);
 }
 
 async function commonBeforeEach() {
@@ -32,4 +42,5 @@ module.exports = {
     commonBeforeEach,
     commonAfterEach,
     commonAfterAll,
+    quizIds
 }

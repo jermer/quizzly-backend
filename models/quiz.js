@@ -5,12 +5,28 @@ const { NotFoundError } = require("../expressError");
 
 class Quiz {
 
-    /** Find all quizzes (optional filters)
+    /** Create a new quiz, given title and description
      * 
-     *  filters may include:
-     *  - (under construction)
+     * Returns { id, title, description }
+     */
+
+    static async create({ title, description }) {
+        const result = await db.query(`
+            INSERT INTO quizzes (title, description)
+            VALUES ($1, $2)
+            RETURNING id, title, description`,
+            [title, description]);
+        const quiz = result.rows[0];
+        return quiz;
+    }
+
+    /** Find all quizzes that meet filter criteria
      * 
-     *  Returns [ {id, title, description }, ... ]
+     * no filters are applied by default
+     * optional filters may include:
+     * - (under construction)
+     * 
+     * Returns [ {id, title, description }, ... ]
      */
 
     static async findAll(filters = {}) {

@@ -18,6 +18,27 @@ afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Create
+ */
+describe("create", function () {
+    test("works", async function () {
+        let quiz = await Quiz.create(
+            {
+                title: "new quiz",
+                description: "a very cool new quiz"
+            });
+        expect(quiz).toEqual(
+            {
+                id: expect.any(Number),
+                title: "new quiz",
+                description: "a very cool new quiz"
+            }
+        )
+    });
+});
+
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Find all
  */
 

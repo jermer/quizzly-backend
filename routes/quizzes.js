@@ -2,11 +2,42 @@
 
 /** Routes for quizzes */
 
+const jsonschema = require("jsonschema");
 const express = require("express");
 const db = require("../db");
 const router = new express.Router();
 
 const Quiz = require("../models/quiz");
+const newQuizSchema = require("../schemas/quizNew.json");
+
+const { BadRequestError } = require("../expressError");
+
+/** POST /quizzes
+ * 
+ * Accepts {title, description}
+ * 
+ * Returns {id, title, description}
+ */
+router.post('/', async function (req, res, next) {
+    try {
+        // validate request body
+        const validator = jsonschema.validate(req.body, newQuizSchema);
+        if (!validator.valid) {
+            // request body is invalid
+            const errs = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errs);
+        }
+
+        // request body is valid, proceed
+        const quiz = await Quiz.create(req.body);
+
+        // return with status code 201
+        return res.status(201).json({ quiz });
+
+    } catch (err) {
+        return next(err);
+    }
+});
 
 /** GET /quizzes
  * 
