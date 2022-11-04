@@ -18,6 +18,7 @@ const { BadRequestError } = require("../expressError");
  * 
  * Returns {id, title, description}
  */
+
 router.post('/', async function (req, res, next) {
     try {
         // validate request body
@@ -54,7 +55,6 @@ router.get('/', async function (req, res, next) {
     }
 });
 
-
 /** GET /quizzes/:id
  * 
  * Returns { quiz: { id, title, description, questions }}
@@ -72,7 +72,6 @@ router.get('/:id', async function (req, res, next) {
         return next(err);
     }
 });
-
 
 /** DELETE /quizzes/:id 
  * 

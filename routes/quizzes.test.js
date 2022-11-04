@@ -2,6 +2,8 @@
 
 const request = require("supertest");
 const app = require("../app");
+const { NotFoundError } = require("../expressError");
+const { findAll } = require("../models/quiz");
 
 // establish common test setup and teardown
 const {
@@ -101,8 +103,6 @@ describe("GET /quizzes", function () {
 
 describe("GET /quizzes/:id", function () {
     test("works", async function () {
-        console.log("**** TESTING", quizIds[0]);
-
         const response = await request(app).get(`/quizzes/${quizIds[0]}`);
         expect(response.body).toEqual({
             quiz: {
@@ -114,4 +114,29 @@ describe("GET /quizzes/:id", function () {
         })
     });
 
+    test("fails for invalid id", async function () {
+        const response = await request(app).get('/quizzes/0');
+        expect(response.statusCode).toEqual(404);
+    });
+
+});
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DELETE /quizzes/:id
+ */
+
+describe("DELETE /quizzes/:id", function () {
+    test("works", async function () {
+        let response = await request(app).delete(`/quizzes/${quizIds[0]}`);
+        expect(response.body).toEqual({ deleted: `${quizIds[0]}` });
+
+        // make a GET request to ensure the quiz no longer exists
+        response = await request(app).get(`/quizzes/${quizIds[0]}`);
+        expect(response.statusCode).toEqual(404);
+    });
+
+    test("fails for invalid id", async function () {
+        const response = await request(app).delete('/quizzes/0');
+        expect(response.statusCode).toEqual(404);
+    });
 });
