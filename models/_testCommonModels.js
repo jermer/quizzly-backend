@@ -2,10 +2,28 @@
 
 const db = require("../db");
 
+const bcrypt = require("bcrypt");
+const { BCRYPT_WORK_FACTOR } = require("../config");
+
+/** 
+ * Establish common setup and teardown for model tests.
+ */
 async function commonBeforeAll() {
     // clean up any existing data
+    await db.query(`DELETE FROM users`);
     await db.query(`DELETE FROM quizzes`);
     await db.query(`DELETE FROM questions`);
+
+    // create some test user data
+    await db.query(`
+        INSERT INTO users (username, password, first_name, last_name, email)
+        VALUES ('testuser', $1, 'First', 'Last', 'testuser@email.com'),
+               ('testuser2', $2, 'First2', 'Last2', 'testuser2@email.com')`,
+        [
+            await bcrypt.hash("password", BCRYPT_WORK_FACTOR),
+            await bcrypt.hash("password", BCRYPT_WORK_FACTOR)
+        ]
+    );
 
     // create some test quiz data
     await db.query(`
