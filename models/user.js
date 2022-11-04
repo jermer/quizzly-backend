@@ -21,7 +21,7 @@ class User {
      * Throws UnauthorizedError if incorrect username/password
      */
 
-    static async authenticate(username, password) {
+    static async authenticate({ username, password }) {
         // try to find the user
         const result = await db.query(
             `SELECT username,
@@ -36,6 +36,7 @@ class User {
         const user = result.rows[0];
 
         if (user) {
+            // user found compare passwords
             const isValid = await bcrypt.compare(password, user.password);
             if (isValid) {
                 // authentication successful
@@ -68,7 +69,7 @@ class User {
             throw new BadRequestError(`Username ${username} is already taken`);
 
         // username is valid, so hash password
-        const hashedPassword = bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+        const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
         // add user to database
         const result = await db.query(`

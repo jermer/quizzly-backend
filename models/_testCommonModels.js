@@ -10,9 +10,9 @@ const { BCRYPT_WORK_FACTOR } = require("../config");
  */
 async function commonBeforeAll() {
     // clean up any existing data
-    await db.query(`DELETE FROM users`);
-    await db.query(`DELETE FROM quizzes`);
-    await db.query(`DELETE FROM questions`);
+    await db.query('DELETE FROM users');
+    await db.query('DELETE FROM quizzes');
+    await db.query('DELETE FROM questions');
 
     // create some test user data
     await db.query(`

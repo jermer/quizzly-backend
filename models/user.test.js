@@ -26,7 +26,10 @@ afterAll(commonAfterAll);
 
 describe("authenticate", function () {
     test("works", async function () {
-        const user = await User.authenticate("testuser", "password");
+        const user = await User.authenticate({
+            username: "testuser",
+            password: "password"
+        });
         expect(user).toEqual({
             username: "testuser",
             firstName: "First",
@@ -37,7 +40,10 @@ describe("authenticate", function () {
 
     test("unauthorized if wrong password", async function () {
         try {
-            await User.authenticate("testuser", "wrongpassword");
+            await User.authenticate({
+                username: "testuser",
+                password: "wrongpassword"
+            });
             fail();
         } catch (err) {
             expect(err instanceof UnauthorizedError).toBeTruthy();
@@ -46,7 +52,10 @@ describe("authenticate", function () {
 
     test("unauthorized if invalid username", async function () {
         try {
-            await User.authenticate("badusername", "password");
+            await User.authenticate({
+                username: "badusername",
+                password: "password"
+            });
             fail();
         } catch (err) {
             expect(err instanceof UnauthorizedError).toBeTruthy();
