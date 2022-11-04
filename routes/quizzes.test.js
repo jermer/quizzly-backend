@@ -3,7 +3,6 @@
 const request = require("supertest");
 const app = require("../app");
 const { NotFoundError } = require("../expressError");
-const { findAll } = require("../models/quiz");
 
 // establish common test setup and teardown
 const {
