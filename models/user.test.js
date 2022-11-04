@@ -1,10 +1,10 @@
 "use strict";
 
-// const db = require("../db");
 const User = require("../models/user");
 const {
     UnauthorizedError,
-    NotFoundError
+    NotFoundError,
+    BadRequestError
 } = require("../expressError");
 
 // establish common test setup and teardown
@@ -59,12 +59,36 @@ describe("authenticate", function () {
  */
 
 describe("register", function () {
-    // test("works", async function(){
-    // });
+    test("works", async function () {
+        const user = await User.register({
+            username: "newtestuser",
+            password: "password",
+            firstName: "FName",
+            lastName: "LName",
+            email: "newtestuser@email.com"
+        });
+        expect(user).toEqual({
+            username: "newtestuser",
+            firstName: "FName",
+            lastName: "LName",
+            email: "newtestuser@email.com"
+        })
+    });
 
-    // test all the bad inputs...
+    test("fails for duplicate username", async function () {
+        try {
+            await User.register({
+                username: "testuser",
+                // password: "password",
+                // firstName: "FName",
+                // lastName: "LName",
+                // email: "newtestuser@email.com"
+            });
+        } catch (err) {
+            expect(err instanceof BadRequestError).toBeTruthy();
+        }
+    })
 })
-
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * findAll

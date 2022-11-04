@@ -78,8 +78,8 @@ class User {
                 ($1, $2, $3, $4, $5)
             RETURNING
                 username,
-                first_name as firstName,
-                last_name as lastName,
+                first_name as "firstName",
+                last_name as "lastName",
                 email`,
             [
                 username,
