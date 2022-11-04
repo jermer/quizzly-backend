@@ -4,7 +4,6 @@
 
 const jsonschema = require("jsonschema");
 const express = require("express");
-const db = require("../db");
 const router = new express.Router();
 
 const Quiz = require("../models/quiz");
