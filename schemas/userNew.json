@@ -1,0 +1,76 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "username",
+        "password",
+        "firstName",
+        "lastName",
+        "email"
+    ],
+    "properties": {
+        "username": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "default": "",
+            "title": "The username Schema",
+            "examples": [
+                "my_username"
+            ]
+        },
+        "password": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 20,
+            "default": "",
+            "title": "The password Schema",
+            "examples": [
+                "my_password"
+            ]
+        },
+        "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "default": "",
+            "title": "The firstName Schema",
+            "examples": [
+                "First"
+            ]
+        },
+        "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "default": "",
+            "title": "The lastName Schema",
+            "examples": [
+                "Last"
+            ]
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 6,
+            "maxLength": 60,
+            "default": "",
+            "title": "The email Schema",
+            "examples": [
+                "handle@email.com"
+            ]
+        }
+    },
+    "examples": [
+        {
+            "username": "my_username",
+            "password": "my_password",
+            "firstName": "First",
+            "lastName": "Last",
+            "email": "handle@email.com"
+        }
+    ]
+}
