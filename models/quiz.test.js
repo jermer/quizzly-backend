@@ -1,6 +1,6 @@
 "use strict";
 
-const db = require("../db");
+// const db = require("../db");
 const Quiz = require("../models/quiz");
 const { NotFoundError } = require("../expressError");
 

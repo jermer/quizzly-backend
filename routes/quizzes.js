@@ -15,7 +15,7 @@ const { BadRequestError } = require("../expressError");
  * 
  * Accepts {title, description}
  * 
- * Returns {id, title, description}
+ * Returns { quiz: { id, title, description } }
  */
 
 router.post('/', async function (req, res, next) {

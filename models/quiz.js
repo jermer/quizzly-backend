@@ -1,4 +1,4 @@
-"user strict";
+"use strict";
 
 const db = require("../db");
 const { NotFoundError } = require("../expressError");
@@ -46,7 +46,6 @@ class Quiz {
         return results.rows;
     }
 
-
     /** Get specific quiz by id
      * 
      * Returns { id, title, description, questions }
@@ -80,7 +79,6 @@ class Quiz {
         quiz.questions = questionsRes.rows;
         return quiz;
     }
-
 
     /** Delete specific quiz from the database by id 
      * 

@@ -10,7 +10,8 @@ const {
     commonBeforeEach,
     commonAfterEach,
     commonAfterAll,
-    quizIds
+    quizIds,
+    questionIds
 } = require("./_testCommonRoutes");
 
 beforeAll(commonBeforeAll);
@@ -102,13 +103,23 @@ describe("GET /quizzes", function () {
 
 describe("GET /quizzes/:id", function () {
     test("works", async function () {
-        const response = await request(app).get(`/quizzes/${quizIds[0]}`);
+        const response = await request(app).get(`/quizzes/${quizIds[1]}`);
         expect(response.body).toEqual({
             quiz: {
                 id: expect.any(Number),
-                title: 'quiz one',
-                description: 'the first test quiz',
-                questions: []
+                title: 'quiz two',
+                description: 'the second test quiz',
+                questions: [
+                    {
+                        id: expect.any(Number),
+                        q_text: 'the only question on quiz two',
+                        right_a: 'correct',
+                        wrong_a1: 'oops 1',
+                        wrong_a2: 'oops 2',
+                        wrong_a3: 'oops 3',
+                        quiz_id: quizIds[1]
+                    }
+                ]
             }
         })
     });
@@ -131,6 +142,10 @@ describe("DELETE /quizzes/:id", function () {
 
         // make a GET request to ensure the quiz no longer exists
         response = await request(app).get(`/quizzes/${quizIds[0]}`);
+        expect(response.statusCode).toEqual(404);
+
+        // make a GET request to ensure that this quiz's questions were also deleted
+        response = await request(app).get(`/questions/${questionIds[0]}`);
         expect(response.statusCode).toEqual(404);
     });
 

@@ -1,0 +1,76 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "additionalProperties": false,
+    "required": [
+        "q_text",
+        "right_a",
+        "wrong_a1",
+        "wrong_a2",
+        "wrong_a3",
+        "quiz_id"
+    ],
+    "properties": {
+        "q_text": {
+            "type": "string",
+            "default": "",
+            "title": "The q_text Schema",
+            "examples": [
+                "How many sides does a triangle have?"
+            ]
+        },
+        "right_a": {
+            "type": "string",
+            "default": "",
+            "title": "The right_a Schema",
+            "examples": [
+                "3 sides"
+            ]
+        },
+        "wrong_a1": {
+            "type": "string",
+            "default": "",
+            "title": "The wrong_a1 Schema",
+            "examples": [
+                "4 sides"
+            ]
+        },
+        "wrong_a2": {
+            "type": "string",
+            "default": "",
+            "title": "The wrong_a2 Schema",
+            "examples": [
+                "5 sides"
+            ]
+        },
+        "wrong_a3": {
+            "type": "string",
+            "default": "",
+            "title": "The wrong_a3 Schema",
+            "examples": [
+                "6 sides"
+            ]
+        },
+        "quiz_id": {
+            "type": "integer",
+            "default": 0,
+            "title": "The quiz_id Schema",
+            "examples": [
+                123
+            ]
+        }
+    },
+    "examples": [
+        {
+            "q_text": "How many sides does a triangle have?",
+            "right_a": "3 sides",
+            "wrong_a1": "4 sides",
+            "wrong_a2": "5 sides",
+            "wrong_a3": "6 sides",
+            "quiz_id": 123
+        }
+    ]
+}
