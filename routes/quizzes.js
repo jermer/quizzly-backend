@@ -45,8 +45,10 @@ router.post('/', async function (req, res, next) {
  */
 
 router.get('/', async function (req, res, next) {
+    const q = req.query;
+
     try {
-        const quizzes = await Quiz.findAll();
+        const quizzes = await Quiz.findAll(q);
         return res.json({ quizzes });
 
     } catch (err) {
