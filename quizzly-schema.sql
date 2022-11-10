@@ -18,8 +18,9 @@ CREATE TABLE questions (
     q_text TEXT NOT NULL,
     right_a TEXT NOT NULL,
     wrong_a1 TEXT NOT NULL,
-    wrong_a2 TEXT NOT NULL,
-    wrong_a3 TEXT NOT NULL,
+    wrong_a2 TEXT,
+    wrong_a3 TEXT,
+    question_order INTEGER NOT NULL,
     quiz_id INTEGER NOT NULL
       REFERENCES quizzes ON DELETE CASCADE
 );
