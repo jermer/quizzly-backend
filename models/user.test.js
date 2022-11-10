@@ -134,7 +134,8 @@ describe("get", function () {
             username: "testuser",
             firstName: "First",
             lastName: "Last",
-            email: "testuser@email.com"
+            email: "testuser@email.com",
+            quizzes: expect.any(Array)
         });
     });
 

@@ -10,11 +10,11 @@ class Question {
 
     /** Create a new question.
      * 
-     * Accepts { q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id }
-     * Returns { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id }
+     * Accepts { q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }
+     * Returns { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }
      */
 
-    static async create({ q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id }) {
+    static async create({ q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }) {
         // verify that quiz_id is valid
         const quizCheck = await db.query(`
             SELECT id
@@ -27,12 +27,12 @@ class Question {
 
         const result = await db.query(`
             INSERT INTO questions
-                (q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id)
+                (q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id)
             VALUES
-                ($1, $2, $3, $4, $5, $6)
+                ($1, $2, $3, $4, $5, $6, $7)
             RETURNING
-                id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id`,
-            [q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id]);
+                id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id`,
+            [q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id]);
         const question = result.rows[0];
         return question;
     }
@@ -43,14 +43,14 @@ class Question {
      * optional filters may include:
      * - quiz_id
      * 
-     * Returns [ { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id }. ... ]
+     * Returns [ { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }. ... ]
      */
 
     static async findAll(filters = {}) {
         let query = `
             SELECT id, q_text, right_a,
                 wrong_a1, wrong_a2, wrong_a3,
-                quiz_id
+                question_order, quiz_id
             FROM questions`;
 
         // prepare for optional filters
@@ -71,13 +71,14 @@ class Question {
         }
 
         // execute query and return results
+        query += ' ORDER BY quiz_id, question_order';
         const results = await db.query(query, queryValues);
         return results.rows;
     }
 
     /** Get specific question by id
      * 
-     * Returns { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id }
+     * Returns { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }
      */
 
     static async get(id) {
@@ -85,7 +86,7 @@ class Question {
         const questionRes = await db.query(`
         SELECT id, q_text, right_a,
             wrong_a1, wrong_a2, wrong_a3,
-            quiz_id
+            question_order, quiz_id
         FROM questions
         WHERE id = $1`,
             [id]);

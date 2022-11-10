@@ -7,8 +7,8 @@ VALUES ('testuser',
         'User',
         'test@testing.com');
 
-INSERT INTO quizzes (id, title, description)
-VALUES (1, 'Shapes Quiz', 'A quiz about shapes!');
+INSERT INTO quizzes (id, title, description, creator)
+VALUES (1, 'Shapes Quiz', 'A sample quiz about shapes!', 'testuser');
 
 INSERT INTO questions ( q_text,
                         right_a,

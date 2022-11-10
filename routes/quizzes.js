@@ -41,7 +41,7 @@ router.post('/', async function (req, res, next) {
 
 /** GET /quizzes
  * 
- *  Returns { quizzes: [ { id, title, description }, ... ] }
+ *  Returns { quizzes: [ { id, title, description, creator }, ... ] }
  */
 
 router.get('/', async function (req, res, next) {
@@ -56,7 +56,7 @@ router.get('/', async function (req, res, next) {
 
 /** GET /quizzes/:id
  * 
- * Returns { quiz: { id, title, description, questions }}
+ * Returns { quiz: { id, title, description, creator, questions }}
  * where questions is [ {id, id, q_text, right_a,
  *                      wrong_a1, wrong_a2, wrong_a3,
  *                      quiz_id}, ... ]

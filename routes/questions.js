@@ -13,9 +13,9 @@ const { BadRequestError } = require("../expressError");
 
 /** POST /questions
  *
- * Accepts { q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id }
+ * Accepts { q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }
  *
- * Returns { question: { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id } }
+ * Returns { question: { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id } }
  */
 
 router.post('/', async function (req, res, next) {
@@ -42,7 +42,7 @@ router.post('/', async function (req, res, next) {
 /** GET /questions
  * 
  *  Returns { questions: [ { id, q_text, right_a,
- *                          wrong_a1, wrong_a2, wrong_a3, quiz_id }, ... ] }
+ *                          wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }, ... ] }
  */
 
 router.get('/', async function (req, res, next) {
@@ -62,7 +62,7 @@ router.get('/', async function (req, res, next) {
 
 /** GET /questions/:id
  * 
- * Returns { question: { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id } }
+ * Returns { question: { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id } }
  */
 
 router.get('/:id', async function (req, res, next) {

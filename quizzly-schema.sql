@@ -10,7 +10,9 @@ CREATE TABLE users (
 CREATE TABLE quizzes (
     id SERIAL PRIMARY KEY,
     title VARCHAR(25) NOT NULL,
-    description TEXT
+    description TEXT,
+    creator VARCHAR(25) NOT NULL
+      REFERENCES users ON DELETE CASCADE
 );
 
 CREATE TABLE questions (

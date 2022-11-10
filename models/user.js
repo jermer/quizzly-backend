@@ -113,7 +113,9 @@ class User {
     /** Get details of specific user
      * 
      * Accepts username
-     * Returns { username, firstName, lastName, email }
+     * Returns { username, firstName, lastName, email, [quizzes] }
+     * 
+     * Where [quizzes] = [ {id}, ... ]
      * 
      * Throws NotFoundError if invalid username
      */
@@ -131,6 +133,14 @@ class User {
         const user = result.rows[0];
         if (!user)
             throw new NotFoundError(`No user found with username ${username}`);
+
+        const quizResults = await db.query(`
+            SELECT id
+            FROM quizzes
+            WHERE creator = $1`,
+            [username]);
+
+        user.quizzes = quizResults.rows.map(q => q.id);
 
         return user;
     }

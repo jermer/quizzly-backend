@@ -34,12 +34,14 @@ async function commonBeforeAll() {
     const quiz1 = await Quiz.create(
         {
             title: 'quiz one',
-            description: 'the first test quiz'
+            description: 'the first test quiz',
+            creator: 'testuser'
         });
     const quiz2 = await Quiz.create(
         {
             title: 'quiz two',
-            description: 'the second test quiz'
+            description: 'the second test quiz',
+            creator: 'testuser2'
         });
     quizIds.push(quiz1.id, quiz2.id);
 
@@ -51,6 +53,7 @@ async function commonBeforeAll() {
             wrong_a1: 'no 1',
             wrong_a2: 'no 2',
             wrong_a3: 'no 3',
+            question_order: 1,
             quiz_id: quiz1.id
         }
     );
@@ -61,6 +64,7 @@ async function commonBeforeAll() {
             wrong_a1: 'nope 1',
             wrong_a2: 'nope 2',
             wrong_a3: 'nope 3',
+            question_order: 2,
             quiz_id: quiz1.id
         }
     );
@@ -71,6 +75,7 @@ async function commonBeforeAll() {
             wrong_a1: 'not 1',
             wrong_a2: 'not 2',
             wrong_a3: 'not 3',
+            question_order: 3,
             quiz_id: quiz1.id
         }
     );
@@ -81,6 +86,7 @@ async function commonBeforeAll() {
             wrong_a1: 'oops 1',
             wrong_a2: 'oops 2',
             wrong_a3: 'oops 3',
+            question_order: 1,
             quiz_id: quiz2.id
         }
     );

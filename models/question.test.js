@@ -30,6 +30,7 @@ describe("create", function () {
                 wrong_a1: 'That one',
                 wrong_a2: 'Something else',
                 wrong_a3: 'None of the above',
+                question_order: 1,
                 quiz_id: 111
             });
         expect(question).toEqual(
@@ -40,6 +41,7 @@ describe("create", function () {
                 wrong_a1: 'That one',
                 wrong_a2: 'Something else',
                 wrong_a3: 'None of the above',
+                question_order: 1,
                 quiz_id: 111
             }
         )
@@ -61,6 +63,7 @@ describe("findAll", function () {
                 wrong_a1: 'no 1',
                 wrong_a2: 'no 2',
                 wrong_a3: 'no 3',
+                question_order: 1,
                 quiz_id: 111
             },
             {
@@ -70,6 +73,7 @@ describe("findAll", function () {
                 wrong_a1: 'nope 1',
                 wrong_a2: 'nope 2',
                 wrong_a3: 'nope 3',
+                question_order: 2,
                 quiz_id: 111
             },
             {
@@ -79,6 +83,7 @@ describe("findAll", function () {
                 wrong_a1: 'not 1',
                 wrong_a2: 'not 2',
                 wrong_a3: 'not 3',
+                question_order: 3,
                 quiz_id: 111
             },
             {
@@ -88,6 +93,7 @@ describe("findAll", function () {
                 wrong_a1: 'oops 1',
                 wrong_a2: 'oops 2',
                 wrong_a3: 'oops 3',
+                question_order: 1,
                 quiz_id: 222
             },
         ]);
@@ -103,6 +109,7 @@ describe("findAll", function () {
                 wrong_a1: 'oops 1',
                 wrong_a2: 'oops 2',
                 wrong_a3: 'oops 3',
+                question_order: 1,
                 quiz_id: 222
             },
         ]);
@@ -133,6 +140,7 @@ describe("get", function () {
             wrong_a1: 'oops 1',
             wrong_a2: 'oops 2',
             wrong_a3: 'oops 3',
+            question_order: 1,
             quiz_id: 222
         });
     })

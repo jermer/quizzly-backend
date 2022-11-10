@@ -28,7 +28,8 @@ describe("POST /quizzes", function () {
             .post("/quizzes")
             .send({
                 title: "new quiz",
-                description: "brand new quiz"
+                description: "brand new quiz",
+                creator: "testuser"
             });
 
         expect(response.statusCode).toEqual(201);
@@ -36,7 +37,8 @@ describe("POST /quizzes", function () {
             quiz: {
                 id: expect.any(Number),
                 title: "new quiz",
-                description: "brand new quiz"
+                description: "brand new quiz",
+                creator: "testuser"
             }
         })
     });
@@ -45,7 +47,8 @@ describe("POST /quizzes", function () {
         const response = await request(app)
             .post("/quizzes")
             .send({
-                description: "brand new quiz"
+                description: "brand new quiz",
+                creator: "testuser"
             });
         expect(response.statusCode).toEqual(400);
     });
@@ -54,7 +57,18 @@ describe("POST /quizzes", function () {
         const response = await request(app)
             .post("/quizzes")
             .send({
-                title: "new quiz"
+                title: "new quiz",
+                creator: "testuser"
+            });
+        expect(response.statusCode).toEqual(400);
+    });
+
+    test("fails for missing creator", async function () {
+        const response = await request(app)
+            .post("/quizzes")
+            .send({
+                title: "new quiz",
+                description: "brand new quiz",
             });
         expect(response.statusCode).toEqual(400);
     });
@@ -65,6 +79,7 @@ describe("POST /quizzes", function () {
             .send({
                 title: "new quiz",
                 description: "brand new quiz",
+                creator: "testuser",
                 other: "not allowed"
             });
         expect(response.statusCode).toEqual(400);
@@ -84,12 +99,14 @@ describe("GET /quizzes", function () {
                 {
                     id: expect.any(Number),
                     title: 'quiz one',
-                    description: 'the first test quiz'
+                    description: 'the first test quiz',
+                    creator: 'testuser'
                 },
                 {
                     id: expect.any(Number),
                     title: 'quiz two',
-                    description: 'the second test quiz'
+                    description: 'the second test quiz',
+                    creator: 'testuser2'
                 }
             ]
         })
@@ -109,6 +126,7 @@ describe("GET /quizzes/:id", function () {
                 id: expect.any(Number),
                 title: 'quiz two',
                 description: 'the second test quiz',
+                creator: 'testuser2',
                 questions: [
                     {
                         id: expect.any(Number),
@@ -117,6 +135,7 @@ describe("GET /quizzes/:id", function () {
                         wrong_a1: 'oops 1',
                         wrong_a2: 'oops 2',
                         wrong_a3: 'oops 3',
+                        question_order: 1,
                         quiz_id: quizIds[1]
                     }
                 ]

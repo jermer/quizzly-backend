@@ -26,13 +26,15 @@ describe("create", function () {
         let quiz = await Quiz.create(
             {
                 title: "new quiz",
-                description: "a very cool new quiz"
+                description: "a very cool new quiz",
+                creator: 'testuser'
             });
         expect(quiz).toEqual(
             {
                 id: expect.any(Number),
                 title: "new quiz",
-                description: "a very cool new quiz"
+                description: "a very cool new quiz",
+                creator: 'testuser'
             }
         )
     });
@@ -49,12 +51,20 @@ describe("findAll", function () {
             {
                 id: 111,
                 title: 'quiz one',
-                description: 'the first test quiz'
+                description: 'the first test quiz',
+                creator: 'testuser'
             },
             {
                 id: 222,
                 title: 'quiz two',
-                description: 'the second test quiz'
+                description: 'the second test quiz',
+                creator: 'testuser2'
+            },
+            {
+                id: 333,
+                title: 'quiz three',
+                description: 'the third test quiz',
+                creator: 'testuser'
             }
         ]);
     });
@@ -72,6 +82,7 @@ describe("get", function () {
         expect(quiz).toEqual({
             id: 111,
             title: 'quiz one',
+            creator: 'testuser',
             description: 'the first test quiz',
             questions: [
                 {
@@ -81,6 +92,7 @@ describe("get", function () {
                     wrong_a1: 'no 1',
                     wrong_a2: 'no 2',
                     wrong_a3: 'no 3',
+                    question_order: 1,
                     quiz_id: 111
                 },
                 {
@@ -90,6 +102,7 @@ describe("get", function () {
                     wrong_a1: 'nope 1',
                     wrong_a2: 'nope 2',
                     wrong_a3: 'nope 3',
+                    question_order: 2,
                     quiz_id: 111
                 },
                 {
@@ -99,6 +112,7 @@ describe("get", function () {
                     wrong_a1: 'not 1',
                     wrong_a2: 'not 2',
                     wrong_a3: 'not 3',
+                    question_order: 3,
                     quiz_id: 111
                 }
             ]

@@ -9,6 +9,7 @@ const {
     commonBeforeEach,
     commonAfterEach,
     commonAfterAll,
+    quizIds,
 } = require("./_testCommonRoutes");
 
 beforeAll(commonBeforeAll);
@@ -55,7 +56,8 @@ describe("GET /users/:username", function () {
                 username: 'testuser',
                 firstName: 'First',
                 lastName: 'Last',
-                email: 'testuser@email.com'
+                email: 'testuser@email.com',
+                quizzes: [quizIds[0]]
             }
         })
     });

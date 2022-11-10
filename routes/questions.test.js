@@ -32,6 +32,7 @@ describe("POST /quizzes", function () {
                 wrong_a1: 'no 1',
                 wrong_a2: 'no 2',
                 wrong_a3: 'no 3',
+                question_order: 1,
                 quiz_id: quizIds[1]
             });
 
@@ -44,6 +45,7 @@ describe("POST /quizzes", function () {
                 wrong_a1: 'no 1',
                 wrong_a2: 'no 2',
                 wrong_a3: 'no 3',
+                question_order: 1,
                 quiz_id: quizIds[1]
             }
         })
@@ -58,6 +60,7 @@ describe("POST /quizzes", function () {
                 wrong_a1: 'no 1',
                 wrong_a2: 'no 2',
                 wrong_a3: 'no 3',
+                question_order: 1,
                 quiz_id: 0
             });
         expect(response.statusCode).toEqual(400);
@@ -82,6 +85,7 @@ describe("POST /quizzes", function () {
                 wrong_a1: 'no 1',
                 wrong_a2: 'no 2',
                 wrong_a3: 'no 3',
+                question_order: 1,
                 quiz_id: quizIds[1],
                 other: 'not allowed'
             });
@@ -106,6 +110,7 @@ describe("GET /questions", function () {
                     wrong_a1: 'no 1',
                     wrong_a2: 'no 2',
                     wrong_a3: 'no 3',
+                    question_order: 1,
                     quiz_id: expect.any(Number)
                 },
                 {
@@ -115,6 +120,7 @@ describe("GET /questions", function () {
                     wrong_a1: 'nope 1',
                     wrong_a2: 'nope 2',
                     wrong_a3: 'nope 3',
+                    question_order: 2,
                     quiz_id: expect.any(Number)
                 },
                 {
@@ -124,6 +130,7 @@ describe("GET /questions", function () {
                     wrong_a1: 'not 1',
                     wrong_a2: 'not 2',
                     wrong_a3: 'not 3',
+                    question_order: 3,
                     quiz_id: expect.any(Number)
                 },
                 {
@@ -133,6 +140,7 @@ describe("GET /questions", function () {
                     wrong_a1: 'oops 1',
                     wrong_a2: 'oops 2',
                     wrong_a3: 'oops 3',
+                    question_order: 1,
                     quiz_id: expect.any(Number)
                 }
             ]
@@ -152,6 +160,7 @@ describe("GET /questions", function () {
                     wrong_a1: 'oops 1',
                     wrong_a2: 'oops 2',
                     wrong_a3: 'oops 3',
+                    question_order: 1,
                     quiz_id: quizIds[1]
                 }
             ]
@@ -175,6 +184,7 @@ describe("GET /questions/:id", function () {
                 wrong_a1: 'no 1',
                 wrong_a2: 'no 2',
                 wrong_a3: 'no 3',
+                question_order: 1,
                 quiz_id: quizIds[0]
             }
         })

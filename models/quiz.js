@@ -10,12 +10,12 @@ class Quiz {
      * Returns { id, title, description }
      */
 
-    static async create({ title, description }) {
+    static async create({ title, description, creator }) {
         const result = await db.query(`
-            INSERT INTO quizzes (title, description)
-            VALUES ($1, $2)
-            RETURNING id, title, description`,
-            [title, description]);
+            INSERT INTO quizzes (title, description, creator)
+            VALUES ($1, $2, $3)
+            RETURNING id, title, description, creator`,
+            [title, description, creator]);
         const quiz = result.rows[0];
         return quiz;
     }
@@ -24,17 +24,36 @@ class Quiz {
      * 
      * no filters are applied by default
      * optional filters may include:
-     * - (under construction)
+     * - searchString (finds case-insensitive, partial matches to title or description)
+     * - creator 
      * 
-     * Returns [ {id, title, description }, ... ]
+     * Returns [ {id, title, description, creator }, ... ]
      */
 
     static async findAll(filters = {}) {
-        let query = `SELECT id, title, description FROM quizzes`;
+        let query = `SELECT id, title, description, creator FROM quizzes`;
 
         // prepare for optional filters
         let whereExpressions = [];
         let queryValues = [];
+
+        const { searchString, creator } = filters;
+
+        // build filter for searchString
+        if (searchString) {
+            queryValues.push(`%${searchString}%`);
+            whereExpressions.push(`
+                    title ILIKE $${queryValues.length}
+                    OR
+                    description ILIKE $${queryValues.length}
+                `);
+        }
+
+        // build filter for creator
+        if (creator) {
+            queryValues.push(creator);
+            whereExpressions.push(`creator = $${queryValues.length}`)
+        }
 
         // add any filtering expressions to the query
         if (whereExpressions.length > 0) {
@@ -48,16 +67,16 @@ class Quiz {
 
     /** Get specific quiz by id
      * 
-     * Returns { id, title, description, questions }
+     * Returns { id, title, description, creator, questions }
      * where questions is [ {id, id, q_text, right_a,
      *                      wrong_a1, wrong_a2, wrong_a3,
-     *                      quiz_id}, ... ]
+     *                      question_order, quiz_id}, ... ]
      */
 
     static async get(id) {
         // query for the quiz
         const quizRes = await db.query(`
-            SELECT id, title, description
+            SELECT id, title, description, creator
             FROM quizzes
             WHERE id = $1`,
             [id]);
@@ -70,9 +89,10 @@ class Quiz {
         const questionsRes = await db.query(`
             SELECT id, q_text, right_a,
             wrong_a1, wrong_a2, wrong_a3,
-            quiz_id
+            question_order, quiz_id
             FROM questions
-            WHERE quiz_id = $1`,
+            WHERE quiz_id = $1
+            ORDER BY question_order`,
             [id]);
 
         // package up result and return
