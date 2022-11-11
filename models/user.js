@@ -1,5 +1,8 @@
 "use strict";
 
+// import { sqlForPartialUpdate } from "../helpers/sql";
+const { sqlForPartialUpdate } = require("../helpers/sql");
+
 /** User model */
 
 const db = require("../db");
@@ -154,7 +157,35 @@ class User {
      */
 
     static async update(username, data) {
+        if (data.password) {
+            data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
+        }
 
+        const { setCols, values } = sqlForPartialUpdate(
+            data,
+            {
+                firstName: "first_name",
+                lastName: "last_name"
+            });
+        // username will be the last parameter in the query
+        const usernameVarIdx = "$" + (values.length + 1);
+
+        const querySQL = `
+            UPDATE users
+            SET ${setCols}
+            WHERE username = ${usernameVarIdx}
+            RETURNING username,
+                      first_name AS "firstName",
+                      last_name AS "lastName",
+                      email`;
+        const result = await db.query(querySQL, [...values, username]);
+        const user = result.rows[0];
+
+        if (!user)
+            throw new NotFoundError(`No user found with username ${username}`);
+
+        delete user.password;
+        return user;
     }
 
     /** Delete specific user

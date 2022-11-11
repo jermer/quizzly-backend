@@ -1,5 +1,6 @@
 "use strict";
 
+const db = require("../db.js");
 const User = require("../models/user");
 const {
     UnauthorizedError,
@@ -152,7 +153,55 @@ describe("get", function () {
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Update
  */
+describe("update", function () {
+    const updateData = {
+        firstName: "NewFirst",
+        lastName: "NewLast",
+        email: "newemail@email.com"
+    };
 
+    test("works", async function () {
+        const result = await User.update('testuser', updateData);
+        expect(result).toEqual({
+            username: 'testuser',
+            ...updateData
+        });
+    });
+
+    test("works: new password is encrypted", async function () {
+        let job = await User.update("testuser", {
+            password: "new",
+        });
+        expect(job).toEqual({
+            username: "testuser",
+            firstName: "First",
+            lastName: "Last",
+            email: "testuser@email.com",
+        });
+        const found = await db.query("SELECT * FROM users WHERE username = 'testuser'");
+        expect(found.rows.length).toEqual(1);
+        expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
+    });
+
+    test("fails for invalid username", async function () {
+        try {
+            await User.update("badusername", updateData);
+            fail();
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy();
+        }
+    });
+
+    test("bad request if no data", async function () {
+        try {
+            await User.update("testuser", {});
+            fail();
+        } catch (err) {
+            expect(err instanceof BadRequestError).toBeTruthy();
+        }
+    });
+
+})
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Remove
