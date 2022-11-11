@@ -5,7 +5,11 @@
 const express = require("express");
 const router = new express.Router();
 
+const jsonschema = require("jsonschema");
+const userUpdateSchema = require("../schemas/userUpdate.json");
+
 const User = require("../models/user");
+const { BadRequestError } = require("../expressError");
 
 /** GET /users
  * 
@@ -32,6 +36,30 @@ router.get('/', async function (req, res, next) {
 router.get('/:username', async function (req, res, next) {
     try {
         const user = await User.get(req.params.username);
+        return res.json({ user });
+
+    } catch (err) {
+        return next(err);
+    }
+});
+
+/** PATCH /users/:username
+ * 
+ * Data can include:
+ *   { firstName, lastName, password, email }
+ *
+ * Returns { username, firstName, lastName, email }
+ **/
+
+router.patch("/:username", async function (req, res, next) {
+    try {
+        const validator = jsonschema.validate(req.body, userUpdateSchema);
+        if (!validator.valid) {
+            const errs = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errs);
+        }
+
+        const user = await User.update(req.params.username, req.body);
         return res.json({ user });
 
     } catch (err) {

@@ -5,24 +5,8 @@
     "default": {},
     "title": "Root Schema",
     "additionalProperties": false,
-    "required": [
-        "username",
-        "password",
-        "firstName",
-        "lastName",
-        "email"
-    ],
+    "required": [],
     "properties": {
-        "username": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 30,
-            "default": "",
-            "title": "The username Schema",
-            "examples": [
-                "my_username"
-            ]
-        },
         "password": {
             "type": "string",
             "minLength": 5,
