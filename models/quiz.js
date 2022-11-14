@@ -6,17 +6,19 @@ const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class Quiz {
 
-    /** Create a new quiz, given title and description
+    /** Create a new quiz.
      * 
-     * Returns { id, title, description }
+     * Accepts { title, description, isPublic, creator }
+     * 
+     * Returns { id, title, description, isPublic, creator }
      */
 
-    static async create({ title, description, creator }) {
+    static async create({ title, description, isPublic = false, creator }) {
         const result = await db.query(`
-            INSERT INTO quizzes (title, description, creator)
-            VALUES ($1, $2, $3)
-            RETURNING id, title, description, creator`,
-            [title, description, creator]);
+            INSERT INTO quizzes (title, description, is_public, creator)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id, title, description, is_public AS "isPublic", creator`,
+            [title, description, isPublic, creator]);
         const quiz = result.rows[0];
         return quiz;
     }
@@ -26,13 +28,13 @@ class Quiz {
      * no filters are applied by default
      * optional filters may include:
      * - searchString (finds case-insensitive, partial matches to title or description)
-     * - creator 
+     * - creator
      * 
      * Returns [ {id, title, description, creator }, ... ]
      */
 
     static async findAll(filters = {}) {
-        let query = `SELECT id, title, description, creator FROM quizzes`;
+        let query = `SELECT id, title, description, is_public AS "isPublic", creator FROM quizzes`;
 
         // prepare for optional filters
         let whereExpressions = [];
@@ -68,7 +70,7 @@ class Quiz {
 
     /** Get specific quiz by id
      * 
-     * Returns { id, title, description, creator, questions }
+     * Returns { id, title, description, isPublic, creator, questions }
      * where questions is [ {id, qText, rightA,
      *                      wrongA1, wrongA2, wrongA3,
      *                      questionOrder, quizId}, ... ]
@@ -77,7 +79,7 @@ class Quiz {
     static async get(id) {
         // query for the quiz
         const quizRes = await db.query(`
-            SELECT id, title, description, creator
+            SELECT id, title, description, is_public AS "isPublic", creator
             FROM quizzes
             WHERE id = $1`,
             [id]);
@@ -115,7 +117,9 @@ class Quiz {
      * Returns { id, title, description }
      */
     static async update(id, data) {
-        const { setCols, values } = sqlForPartialUpdate(data, {});
+        const { setCols, values } = sqlForPartialUpdate(data, {
+            isPublic: "is_public"
+        });
         // id will be the last parameter in the query
         const idVarIdx = "$" + (values.length + 1);
 
@@ -126,6 +130,7 @@ class Quiz {
             RETURNING id,
                       title,
                       description,
+                      is_public AS "isPublic",
                       creator`;
         const result = await db.query(querySQL, [...values, id]);
         const quiz = result.rows[0];

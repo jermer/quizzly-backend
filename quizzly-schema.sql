@@ -11,6 +11,7 @@ CREATE TABLE quizzes (
     id SERIAL PRIMARY KEY,
     title VARCHAR(25) NOT NULL,
     description TEXT,
+    is_public BOOLEAN DEFAULT FALSE,
     creator VARCHAR(25) NOT NULL
       REFERENCES users ON DELETE CASCADE
 );

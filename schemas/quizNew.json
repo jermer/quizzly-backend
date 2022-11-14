@@ -27,6 +27,14 @@
                 "Geometry quiz about shapes."
             ]
         },
+        "isPublic": {
+            "type": "boolean",
+            "default": false,
+            "title": "The isPublic Schema",
+            "examples": [
+                false
+            ]
+        },
         "creator": {
             "type": "string",
             "default": "",
@@ -40,6 +48,7 @@
         {
             "title": "Shapes Quiz",
             "description": "Geometry quiz about shapes.",
+            "isPublic": false,
             "creator": "username"
         }
     ]

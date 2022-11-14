@@ -34,6 +34,7 @@ describe("create", function () {
                 id: expect.any(Number),
                 title: "new quiz",
                 description: "a very cool new quiz",
+                isPublic: false,
                 creator: 'testuser'
             }
         )
@@ -52,18 +53,21 @@ describe("findAll", function () {
                 id: 111,
                 title: 'quiz one',
                 description: 'the first test quiz',
+                isPublic: false,
                 creator: 'testuser'
             },
             {
                 id: 222,
                 title: 'quiz two',
                 description: 'the second test quiz',
+                isPublic: false,
                 creator: 'testuser2'
             },
             {
                 id: 333,
                 title: 'quiz three',
                 description: 'the third test quiz',
+                isPublic: true,
                 creator: 'testuser'
             }
         ]);
@@ -82,8 +86,9 @@ describe("get", function () {
         expect(quiz).toEqual({
             id: 111,
             title: 'quiz one',
-            creator: 'testuser',
             description: 'the first test quiz',
+            isPublic: false,
+            creator: 'testuser',
             questions: [
                 {
                     id: expect.any(Number),
@@ -136,7 +141,8 @@ describe("get", function () {
 describe("update", function () {
     const updateData = {
         title: "NewTitle",
-        description: "New description!"
+        description: "New description!",
+        isPublic: true
     }
 
     test("works", async function () {
@@ -145,6 +151,7 @@ describe("update", function () {
             id: 111,
             title: "NewTitle",
             description: "New description!",
+            isPublic: true,
             creator: "testuser"
         });
     })

@@ -27,10 +27,10 @@ async function commonBeforeAll() {
 
     // create some test quiz data
     await db.query(`
-        INSERT INTO quizzes (id, title, description, creator)
-        VALUES (111, 'quiz one', 'the first test quiz', 'testuser'),
-               (222, 'quiz two', 'the second test quiz', 'testuser2'),
-               (333, 'quiz three', 'the third test quiz', 'testuser')`
+        INSERT INTO quizzes (id, title, description, creator, is_public)
+        VALUES (111, 'quiz one', 'the first test quiz', 'testuser', FALSE),
+               (222, 'quiz two', 'the second test quiz', 'testuser2', FALSE),
+               (333, 'quiz three', 'the third test quiz', 'testuser', TRUE)`
     );
 
     // create some questions

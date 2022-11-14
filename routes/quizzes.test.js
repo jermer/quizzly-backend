@@ -30,6 +30,7 @@ describe("POST /quizzes", function () {
             .send({
                 title: "new quiz",
                 description: "brand new quiz",
+                isPublic: false,
                 creator: "testuser"
             });
 
@@ -39,6 +40,7 @@ describe("POST /quizzes", function () {
                 id: expect.any(Number),
                 title: "new quiz",
                 description: "brand new quiz",
+                isPublic: false,
                 creator: "testuser"
             }
         })
@@ -101,12 +103,14 @@ describe("GET /quizzes", function () {
                     id: expect.any(Number),
                     title: 'quiz one',
                     description: 'the first test quiz',
+                    isPublic: false,
                     creator: 'testuser'
                 },
                 {
                     id: expect.any(Number),
                     title: 'quiz two',
                     description: 'the second test quiz',
+                    isPublic: false,
                     creator: 'testuser2'
                 }
             ]
@@ -127,6 +131,7 @@ describe("GET /quizzes/:id", function () {
                 id: expect.any(Number),
                 title: 'quiz two',
                 description: 'the second test quiz',
+                isPublic: false,
                 creator: 'testuser2',
                 questions: [
                     {
@@ -161,6 +166,7 @@ describe("PATCH /quizzes/:id", function () {
             .patch(`/quizzes/${quizIds[0]}`)
             .send({
                 title: "new quiz 1 title",
+                isPublic: true
             })
         // .set("authorization", `Bearer ${adminToken}`);
         expect(resp.body).toEqual({
@@ -168,6 +174,7 @@ describe("PATCH /quizzes/:id", function () {
                 id: quizIds[0],
                 title: "new quiz 1 title",
                 description: "the first test quiz",
+                isPublic: true,
                 creator: "testuser"
             },
         });

@@ -22,12 +22,21 @@
             "examples": [
                 "Geometry quiz about shapes."
             ]
+        },
+        "isPublic": {
+            "type": "boolean",
+            "default": "",
+            "title": "The isPublic Schema",
+            "examples": [
+                false
+            ]
         }
     },
     "examples": [
         {
             "title": "Shapes Quiz",
-            "description": "Geometry quiz about shapes."
+            "description": "Geometry quiz about shapes.",
+            "isPublic": false
         }
     ]
 }
