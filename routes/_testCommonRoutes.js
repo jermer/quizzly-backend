@@ -48,46 +48,46 @@ async function commonBeforeAll() {
     // create some test question data
     const quest1 = await Question.create(
         {
-            q_text: 'quiz 1 first question',
-            right_a: 'yes',
-            wrong_a1: 'no 1',
-            wrong_a2: 'no 2',
-            wrong_a3: 'no 3',
-            question_order: 1,
-            quiz_id: quiz1.id
+            qText: 'quiz 1 first question',
+            rightA: 'yes',
+            wrongA1: 'no 1',
+            wrongA2: 'no 2',
+            wrongA3: 'no 3',
+            questionOrder: 1,
+            quizId: quiz1.id
         }
     );
     const quest2 = await Question.create(
         {
-            q_text: 'quiz 1 second question',
-            right_a: 'yep',
-            wrong_a1: 'nope 1',
-            wrong_a2: 'nope 2',
-            wrong_a3: 'nope 3',
-            question_order: 2,
-            quiz_id: quiz1.id
+            qText: 'quiz 1 second question',
+            rightA: 'yep',
+            wrongA1: 'nope 1',
+            wrongA2: 'nope 2',
+            wrongA3: 'nope 3',
+            questionOrder: 2,
+            quizId: quiz1.id
         }
     );
     const quest3 = await Question.create(
         {
-            q_text: 'quiz 1 third question',
-            right_a: 'this',
-            wrong_a1: 'not 1',
-            wrong_a2: 'not 2',
-            wrong_a3: 'not 3',
-            question_order: 3,
-            quiz_id: quiz1.id
+            qText: 'quiz 1 third question',
+            rightA: 'this',
+            wrongA1: 'not 1',
+            wrongA2: 'not 2',
+            wrongA3: 'not 3',
+            questionOrder: 3,
+            quizId: quiz1.id
         }
     );
     const quest4 = await Question.create(
         {
-            q_text: 'the only question on quiz two',
-            right_a: 'correct',
-            wrong_a1: 'oops 1',
-            wrong_a2: 'oops 2',
-            wrong_a3: 'oops 3',
-            question_order: 1,
-            quiz_id: quiz2.id
+            qText: 'the only question on quiz two',
+            rightA: 'correct',
+            wrongA1: 'oops 1',
+            wrongA2: 'oops 2',
+            wrongA3: 'oops 3',
+            questionOrder: 1,
+            quizId: quiz2.id
         }
     );
     questionIds.push(quest1.id, quest2.id, quest3.id, quest4.id);

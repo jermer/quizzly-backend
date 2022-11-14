@@ -87,33 +87,33 @@ describe("get", function () {
             questions: [
                 {
                     id: expect.any(Number),
-                    q_text: 'quiz 1 first question',
-                    right_a: 'yes',
-                    wrong_a1: 'no 1',
-                    wrong_a2: 'no 2',
-                    wrong_a3: 'no 3',
-                    question_order: 1,
-                    quiz_id: 111
+                    qText: 'quiz 1 first question',
+                    rightA: 'yes',
+                    wrongA1: 'no 1',
+                    wrongA2: 'no 2',
+                    wrongA3: 'no 3',
+                    questionOrder: 1,
+                    quizId: 111
                 },
                 {
                     id: expect.any(Number),
-                    q_text: 'quiz 1 second question',
-                    right_a: 'yep',
-                    wrong_a1: 'nope 1',
-                    wrong_a2: 'nope 2',
-                    wrong_a3: 'nope 3',
-                    question_order: 2,
-                    quiz_id: 111
+                    qText: 'quiz 1 second question',
+                    rightA: 'yep',
+                    wrongA1: 'nope 1',
+                    wrongA2: 'nope 2',
+                    wrongA3: 'nope 3',
+                    questionOrder: 2,
+                    quizId: 111
                 },
                 {
                     id: expect.any(Number),
-                    q_text: 'quiz 1 third question',
-                    right_a: 'this',
-                    wrong_a1: 'not 1',
-                    wrong_a2: 'not 2',
-                    wrong_a3: 'not 3',
-                    question_order: 3,
-                    quiz_id: 111
+                    qText: 'quiz 1 third question',
+                    rightA: 'this',
+                    wrongA1: 'not 1',
+                    wrongA2: 'not 2',
+                    wrongA3: 'not 3',
+                    questionOrder: 3,
+                    quizId: 111
                 }
             ]
         });

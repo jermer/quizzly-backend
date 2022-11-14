@@ -130,13 +130,13 @@ describe("GET /quizzes/:id", function () {
                 questions: [
                     {
                         id: expect.any(Number),
-                        q_text: 'the only question on quiz two',
-                        right_a: 'correct',
-                        wrong_a1: 'oops 1',
-                        wrong_a2: 'oops 2',
-                        wrong_a3: 'oops 3',
-                        question_order: 1,
-                        quiz_id: quizIds[1]
+                        qText: 'the only question on quiz two',
+                        rightA: 'correct',
+                        wrongA1: 'oops 1',
+                        wrongA2: 'oops 2',
+                        wrongA3: 'oops 3',
+                        questionOrder: 1,
+                        quizId: quizIds[1]
                     }
                 ]
             }

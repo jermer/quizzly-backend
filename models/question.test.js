@@ -25,24 +25,24 @@ describe("create", function () {
     test("works", async function () {
         let question = await Question.create(
             {
-                q_text: 'What is the new question?',
-                right_a: 'This one',
-                wrong_a1: 'That one',
-                wrong_a2: 'Something else',
-                wrong_a3: 'None of the above',
-                question_order: 1,
-                quiz_id: 111
+                qText: 'What is the new question?',
+                rightA: 'This one',
+                wrongA1: 'That one',
+                wrongA2: 'Something else',
+                wrongA3: 'None of the above',
+                questionOrder: 1,
+                quizId: 111
             });
         expect(question).toEqual(
             {
                 id: expect.any(Number),
-                q_text: 'What is the new question?',
-                right_a: 'This one',
-                wrong_a1: 'That one',
-                wrong_a2: 'Something else',
-                wrong_a3: 'None of the above',
-                question_order: 1,
-                quiz_id: 111
+                qText: 'What is the new question?',
+                rightA: 'This one',
+                wrongA1: 'That one',
+                wrongA2: 'Something else',
+                wrongA3: 'None of the above',
+                questionOrder: 1,
+                quizId: 111
             }
         )
     });
@@ -58,59 +58,59 @@ describe("findAll", function () {
         expect(questions).toEqual([
             {
                 id: expect.any(Number),
-                q_text: 'quiz 1 first question',
-                right_a: 'yes',
-                wrong_a1: 'no 1',
-                wrong_a2: 'no 2',
-                wrong_a3: 'no 3',
-                question_order: 1,
-                quiz_id: 111
+                qText: 'quiz 1 first question',
+                rightA: 'yes',
+                wrongA1: 'no 1',
+                wrongA2: 'no 2',
+                wrongA3: 'no 3',
+                questionOrder: 1,
+                quizId: 111
             },
             {
                 id: expect.any(Number),
-                q_text: 'quiz 1 second question',
-                right_a: 'yep',
-                wrong_a1: 'nope 1',
-                wrong_a2: 'nope 2',
-                wrong_a3: 'nope 3',
-                question_order: 2,
-                quiz_id: 111
+                qText: 'quiz 1 second question',
+                rightA: 'yep',
+                wrongA1: 'nope 1',
+                wrongA2: 'nope 2',
+                wrongA3: 'nope 3',
+                questionOrder: 2,
+                quizId: 111
             },
             {
                 id: expect.any(Number),
-                q_text: 'quiz 1 third question',
-                right_a: 'this',
-                wrong_a1: 'not 1',
-                wrong_a2: 'not 2',
-                wrong_a3: 'not 3',
-                question_order: 3,
-                quiz_id: 111
+                qText: 'quiz 1 third question',
+                rightA: 'this',
+                wrongA1: 'not 1',
+                wrongA2: 'not 2',
+                wrongA3: 'not 3',
+                questionOrder: 3,
+                quizId: 111
             },
             {
                 id: expect.any(Number),
-                q_text: 'the only question on quiz two',
-                right_a: 'correct',
-                wrong_a1: 'oops 1',
-                wrong_a2: 'oops 2',
-                wrong_a3: 'oops 3',
-                question_order: 1,
-                quiz_id: 222
+                qText: 'the only question on quiz two',
+                rightA: 'correct',
+                wrongA1: 'oops 1',
+                wrongA2: 'oops 2',
+                wrongA3: 'oops 3',
+                questionOrder: 1,
+                quizId: 222
             },
         ]);
     });
 
     test("works: filter by quiz_id", async function () {
-        let questions = await Question.findAll({ quiz_id: 222 });
+        let questions = await Question.findAll({ quizId: 222 });
         expect(questions).toEqual([
             {
                 id: expect.any(Number),
-                q_text: 'the only question on quiz two',
-                right_a: 'correct',
-                wrong_a1: 'oops 1',
-                wrong_a2: 'oops 2',
-                wrong_a3: 'oops 3',
-                question_order: 1,
-                quiz_id: 222
+                qText: 'the only question on quiz two',
+                rightA: 'correct',
+                wrongA1: 'oops 1',
+                wrongA2: 'oops 2',
+                wrongA3: 'oops 3',
+                questionOrder: 1,
+                quizId: 222
             },
         ]);
     });
@@ -135,13 +135,13 @@ describe("get", function () {
         let question = await Question.get(questionId);
         expect(question).toEqual({
             id: expect.any(Number),
-            q_text: 'the only question on quiz two',
-            right_a: 'correct',
-            wrong_a1: 'oops 1',
-            wrong_a2: 'oops 2',
-            wrong_a3: 'oops 3',
-            question_order: 1,
-            quiz_id: 222
+            qText: 'the only question on quiz two',
+            rightA: 'correct',
+            wrongA1: 'oops 1',
+            wrongA2: 'oops 2',
+            wrongA3: 'oops 3',
+            questionOrder: 1,
+            quizId: 222
         });
     })
 
@@ -154,6 +154,12 @@ describe("get", function () {
         }
     })
 })
+
+/**
+ * Update
+ */
+
+
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Remove

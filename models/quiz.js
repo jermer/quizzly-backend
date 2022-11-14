@@ -2,6 +2,7 @@
 
 const db = require("../db");
 const { NotFoundError } = require("../expressError");
+const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class Quiz {
 
@@ -68,9 +69,9 @@ class Quiz {
     /** Get specific quiz by id
      * 
      * Returns { id, title, description, creator, questions }
-     * where questions is [ {id, id, q_text, right_a,
-     *                      wrong_a1, wrong_a2, wrong_a3,
-     *                      question_order, quiz_id}, ... ]
+     * where questions is [ {id, qText, rightA,
+     *                      wrongA1, wrongA2, wrongA3,
+     *                      questionOrder, quizId}, ... ]
      */
 
     static async get(id) {
@@ -87,9 +88,14 @@ class Quiz {
 
         // query for the quiz questions
         const questionsRes = await db.query(`
-            SELECT id, q_text, right_a,
-            wrong_a1, wrong_a2, wrong_a3,
-            question_order, quiz_id
+            SELECT id,
+                   q_text AS "qText",
+                   right_a AS "rightA",
+                   wrong_a1 AS "wrongA1",
+                   wrong_a2 AS "wrongA2",
+                   wrong_a3 AS "wrongA3",
+                   question_order AS "questionOrder",
+                   quiz_id AS "quizId"
             FROM questions
             WHERE quiz_id = $1
             ORDER BY question_order`,
@@ -97,6 +103,39 @@ class Quiz {
 
         // package up result and return
         quiz.questions = questionsRes.rows;
+        return quiz;
+    }
+
+    /** Update details of a specifc quiz
+     * 
+     * Accepts id, data
+     * where data may include some or all of the fields: 
+     *  { title, description }
+     * 
+     * Returns { id, title, description }
+     */
+    static async update(id, data) {
+        const { setCols, values } = sqlForPartialUpdate(
+            data,
+            {
+
+            });
+        // id will be the last parameter in the query
+        const idVarIdx = "$" + (values.length + 1);
+
+        const querySQL = `
+            UPDATE quizzes
+            SET ${setCols}
+            WHERE id = ${idVarIdx}
+            RETURNING id,
+                      title,
+                      description`;
+        const result = await db.query(querySQL, [...values, id]);
+        const quiz = result.rows[0];
+
+        if (!quiz)
+            throw new NotFoundError(`No quiz found with id ${id}`);
+
         return quiz;
     }
 

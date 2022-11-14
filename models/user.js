@@ -150,7 +150,10 @@ class User {
 
     /** Update details of specific user
      * 
-     * Accepts username
+     * Accepts username, data
+     * where data may include some or all of the fields:
+     *  { password, firstName, lastName, email }
+     * 
      * Returns { username, firstName, lastName, email }
      * 
      * Throws NotFoundError if invalid username

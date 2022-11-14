@@ -13,9 +13,10 @@ const { BadRequestError } = require("../expressError");
 
 /** POST /questions
  *
- * Accepts { q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }
+ * Accepts { qText, rightA, wrongA1, wrongA2, wrongA3, questionOrder, quizId }
  *
- * Returns { question: { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id } }
+ * Returns { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3,
+ *  questionOrder, quizId } }
  */
 
 router.post('/', async function (req, res, next) {
@@ -41,15 +42,15 @@ router.post('/', async function (req, res, next) {
 
 /** GET /questions
  * 
- *  Returns { questions: [ { id, q_text, right_a,
- *                          wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id }, ... ] }
+ * Returns { questions: [ { id, qText, rightA, wrongA1, wrongA2, wrongA3,
+ *  questionOrder, quizId }, ... ] }
  */
 
 router.get('/', async function (req, res, next) {
     const q = req.query;
 
     // recast quiz_id as an integer, if included in query string
-    if (q.quiz_id) q.quiz_id = +q.quiz_id;
+    if (q.quizId) q.quizId = +q.quizId;
 
     try {
         const questions = await Question.findAll(q);
@@ -62,7 +63,8 @@ router.get('/', async function (req, res, next) {
 
 /** GET /questions/:id
  * 
- * Returns { question: { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id } }
+ * Returns { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3,
+ *  questionOrder, quizId } }
  */
 
 router.get('/:id', async function (req, res, next) {

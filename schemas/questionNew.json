@@ -6,65 +6,65 @@
     "title": "Root Schema",
     "additionalProperties": false,
     "required": [
-        "q_text",
-        "right_a",
-        "wrong_a1",
-        "question_order",
-        "quiz_id"
+        "qText",
+        "rightA",
+        "wrongA1",
+        "questionOrder",
+        "quizId"
     ],
     "properties": {
-        "q_text": {
+        "qText": {
             "type": "string",
             "default": "",
-            "title": "The q_text Schema",
+            "title": "The qText Schema",
             "examples": [
                 "How many sides does a triangle have?"
             ]
         },
-        "right_a": {
+        "rightA": {
             "type": "string",
             "default": "",
-            "title": "The right_a Schema",
+            "title": "The rightA Schema",
             "examples": [
                 "3 sides"
             ]
         },
-        "wrong_a1": {
+        "wrongA1": {
             "type": "string",
             "default": "",
-            "title": "The wrong_a1 Schema",
+            "title": "The wrongA1 Schema",
             "examples": [
                 "4 sides"
             ]
         },
-        "wrong_a2": {
+        "wrongA2": {
             "type": "string",
             "default": "",
-            "title": "The wrong_a2 Schema",
+            "title": "The wrongA2 Schema",
             "examples": [
                 "5 sides"
             ]
         },
-        "wrong_a3": {
+        "wrongA3": {
             "type": "string",
             "default": "",
-            "title": "The wrong_a3 Schema",
+            "title": "The wrongA3 Schema",
             "examples": [
                 "6 sides"
             ]
         },
-        "question_order": {
+        "questionOrder": {
             "type": "integer",
             "default": 0,
-            "title": "The question_order Schema",
+            "title": "The questionOrder Schema",
             "examples": [
                 1
             ]
         },
-        "quiz_id": {
+        "quizId": {
             "type": "integer",
             "default": 0,
-            "title": "The quiz_id Schema",
+            "title": "The quizId Schema",
             "examples": [
                 123
             ]
@@ -72,13 +72,13 @@
     },
     "examples": [
         {
-            "q_text": "How many sides does a triangle have?",
-            "right_a": "3 sides",
-            "wrong_a1": "4 sides",
-            "wrong_a2": "5 sides",
-            "wrong_a3": "6 sides",
-            "question_order": 1,
-            "quiz_id": 123
+            "qText": "How many sides does a triangle have?",
+            "rightA": "3 sides",
+            "wrongA1": "4 sides",
+            "wrongA2": "5 sides",
+            "wrongA3": "6 sides",
+            "questionOrder": 1,
+            "quizId": 123
         }
     ]
 }
