@@ -2,7 +2,7 @@
 
 const db = require("../db");
 const Question = require("../models/question");
-const { NotFoundError } = require("../expressError");
+const { NotFoundError, BadRequestError } = require("../expressError");
 
 // establish common test setup and teardown
 const {
@@ -155,11 +155,71 @@ describe("get", function () {
     })
 })
 
-/**
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Update
  */
 
+describe("update", function () {
+    const updateData = {
+        qText: "New question text",
+        rightA: "New right answer",
+        wrongA1: "New wrong answer",
+        wrongA2: "",
+        wrongA3: ""
+    }
 
+    test("works", async function () {
+        // query for a question id
+        // this should return a single result,
+        // the only question on test quiz id = 222
+        const result = await db.query(`
+                SELECT id
+                FROM questions
+                WHERE quiz_id = $1`,
+            [222]);
+        const questionId = result.rows[0].id;
+
+        let response = await Question.update(questionId, updateData);
+        expect(response).toEqual({
+            id: questionId,
+            qText: "New question text",
+            rightA: "New right answer",
+            wrongA1: "New wrong answer",
+            wrongA2: "",
+            wrongA3: "",
+            questionOrder: expect.any(Number),
+            quizId: 222
+        });
+    })
+
+    test("throws not found error if invalid quiz id", async function () {
+        try {
+            await Question.update(0, updateData);
+            fail();
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy();
+        }
+    })
+
+    test("throws bad request error if no update data", async function () {
+        // query for a question id
+        // this should return a single result,
+        // the only question on test quiz id = 222
+        const result = await db.query(`
+                SELECT id
+                FROM questions
+                WHERE quiz_id = $1`,
+            [222]);
+        const questionId = result.rows[0].id;
+
+        try {
+            let quiz = await Question.update(questionId, {});
+            fail();
+        } catch (err) {
+            expect(err instanceof BadRequestError).toBeTruthy();
+        }
+    })
+})
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Remove

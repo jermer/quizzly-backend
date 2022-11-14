@@ -8,6 +8,7 @@ const router = new express.Router();
 
 const Question = require("../models/question");
 const newQuestionSchema = require("../schemas/questionNew.json");
+const updateQuestionSchema = require("../schemas/questionUpdate.json");
 
 const { BadRequestError } = require("../expressError");
 
@@ -77,7 +78,31 @@ router.get('/:id', async function (req, res, next) {
     }
 });
 
-/** DELETE /question/:id 
+/** PATCH /questions/:id
+ * 
+ * Accepts update data which may include the fields:
+ *  { qText, rightA, wrongA1, wrongA2, wrongA3, questionOrder }
+ * 
+ * Returns { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3,
+ *  questionOrder, quizId } }
+ */
+router.patch('/:id', async function (req, res, next) {
+    try {
+        const validator = jsonschema.validate(req.body, updateQuestionSchema);
+        if (!validator.valid) {
+            const errs = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errs);
+        }
+
+        const question = await Question.update(req.params.id, req.body);
+        return res.json({ question });
+
+    } catch (err) {
+        return next(err);
+    }
+})
+
+/** DELETE /questions/:id 
  * 
  * Returns { deleted: :id }
  */

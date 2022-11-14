@@ -8,6 +8,7 @@ const router = new express.Router();
 
 const Quiz = require("../models/quiz");
 const newQuizSchema = require("../schemas/quizNew.json");
+const updateQuizSchema = require("../schemas/quizUpdate.json");
 
 const { BadRequestError } = require("../expressError");
 
@@ -59,9 +60,9 @@ router.get('/', async function (req, res, next) {
 /** GET /quizzes/:id
  * 
  * Returns { quiz: { id, title, description, creator, questions }}
- * where questions is [ {id, id, q_text, right_a,
- *                      wrong_a1, wrong_a2, wrong_a3,
- *                      quiz_id}, ... ]
+ * where questions is [ {id, id, qText, rightA,
+ *                      wrongA1, wrongA2, wrongA3,
+ *                      questionOrder, quizId}, ... ]
  */
 
 router.get('/:id', async function (req, res, next) {
@@ -73,6 +74,29 @@ router.get('/:id', async function (req, res, next) {
         return next(err);
     }
 });
+
+/** PATCH /quizzes/:id
+ * 
+ * Accepts update data which may include the fields:
+ *  { title, description }
+ * 
+ * Returns { quiz: { id, title, description, creator } }
+ */
+router.patch('/:id', async function (req, res, next) {
+    try {
+        const validator = jsonschema.validate(req.body, updateQuizSchema);
+        if (!validator.valid) {
+            const errs = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errs);
+        }
+
+        const quiz = await Quiz.update(req.params.id, req.body);
+        return res.json({ quiz });
+
+    } catch (err) {
+        return next(err);
+    }
+})
 
 /** DELETE /quizzes/:id 
  * 

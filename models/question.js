@@ -128,16 +128,22 @@ class Question {
      * 
      * Accepts id, data
      * where data may include some or all of the fields: 
-     *  { q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order }
+     *  { qText, rightA, wrongA1, wrongA2, wrongA3, questionOrder }
      * 
-     * Returns { id, q_text, right_a, wrong_a1, wrong_a2, wrong_a3, 
-     *           question_order, quiz_id }
+     * Returns { id, qText, rightA, wrongA1, wrongA2, wrongA3, 
+     *           questionOrder, quizId }
      */
     static async update(id, data) {
         const { setCols, values } = sqlForPartialUpdate(
             data,
             {
-
+                qText: "q_text",
+                rightA: "right_a",
+                wrongA1: "wrong_a1",
+                wrongA2: "wrong_a2",
+                wrongA3: "wrong_a3",
+                questionOrder: "question_order",
+                quizId: "quiz_id"
             });
         // id will be the last parameter in the query
         const idVarIdx = "$" + (values.length + 1);

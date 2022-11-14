@@ -178,7 +178,7 @@ describe("GET /questions/:id", function () {
         const response = await request(app).get(`/questions/${questionIds[0]}`);
         expect(response.body).toEqual({
             question: {
-                id: expect.any(Number),
+                id: questionIds[0],
                 qText: 'quiz 1 first question',
                 rightA: 'yes',
                 wrongA1: 'no 1',
@@ -196,6 +196,49 @@ describe("GET /questions/:id", function () {
     });
 
 });
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * PATCH /questions/:id
+ */
+
+describe("PATCH /questions/:id", function () {
+    test("works", async function () {
+        const resp = await request(app)
+            .patch(`/questions/${questionIds[0]}`)
+            .send({
+                qText: "new question text",
+            })
+        // .set("authorization", `Bearer ${adminToken}`);
+        expect(resp.body).toEqual({
+            question: {
+                id: questionIds[0],
+                qText: 'new question text',
+                rightA: 'yes',
+                wrongA1: 'no 1',
+                wrongA2: 'no 2',
+                wrongA3: 'no 3',
+                questionOrder: 1,
+                quizId: quizIds[0]
+            },
+        });
+    });
+
+    test("fails for invalid id", async function () {
+        const response = await request(app)
+            .patch('/questions/0')
+            .send({
+                qText: "new question text",
+            });
+        expect(response.statusCode).toEqual(404);
+    });
+
+    test("fails for no update data", async function () {
+        const response = await request(app)
+            .patch(`/questions/${questionIds[0]}`);
+        expect(response.statusCode).toEqual(400);
+    });
+
+})
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DELETE /questions/:id

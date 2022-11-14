@@ -115,11 +115,7 @@ class Quiz {
      * Returns { id, title, description }
      */
     static async update(id, data) {
-        const { setCols, values } = sqlForPartialUpdate(
-            data,
-            {
-
-            });
+        const { setCols, values } = sqlForPartialUpdate(data, {});
         // id will be the last parameter in the query
         const idVarIdx = "$" + (values.length + 1);
 
@@ -129,7 +125,8 @@ class Quiz {
             WHERE id = ${idVarIdx}
             RETURNING id,
                       title,
-                      description`;
+                      description,
+                      creator`;
         const result = await db.query(querySQL, [...values, id]);
         const quiz = result.rows[0];
 

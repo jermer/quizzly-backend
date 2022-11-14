@@ -2,7 +2,7 @@
 
 // const db = require("../db");
 const Quiz = require("../models/quiz");
-const { NotFoundError } = require("../expressError");
+const { NotFoundError, BadRequestError } = require("../expressError");
 
 // establish common test setup and teardown
 const {
@@ -125,6 +125,45 @@ describe("get", function () {
             fail();
         } catch (err) {
             expect(err instanceof NotFoundError).toBeTruthy();
+        }
+    })
+})
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Update
+ */
+
+describe("update", function () {
+    const updateData = {
+        title: "NewTitle",
+        description: "New description!"
+    }
+
+    test("works", async function () {
+        let response = await Quiz.update(111, updateData);
+        expect(response).toEqual({
+            id: 111,
+            title: "NewTitle",
+            description: "New description!",
+            creator: "testuser"
+        });
+    })
+
+    test("throws not found error if invalid quiz id", async function () {
+        try {
+            await Quiz.update(0, updateData);
+            fail();
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy();
+        }
+    })
+
+    test("throws bad request error if no update data", async function () {
+        try {
+            await Quiz.update(111, {});
+            fail();
+        } catch (err) {
+            expect(err instanceof BadRequestError).toBeTruthy();
         }
     })
 })

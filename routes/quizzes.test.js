@@ -3,6 +3,7 @@
 const request = require("supertest");
 const app = require("../app");
 const { NotFoundError } = require("../expressError");
+const { findAll } = require("../models/user");
 
 // establish common test setup and teardown
 const {
@@ -149,6 +150,50 @@ describe("GET /quizzes/:id", function () {
     });
 
 });
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * PATCH /quizzes/:id
+ */
+
+describe("PATCH /quizzes/:id", function () {
+    test("works", async function () {
+        const resp = await request(app)
+            .patch(`/quizzes/${quizIds[0]}`)
+            .send({
+                title: "new quiz 1 title",
+            })
+        // .set("authorization", `Bearer ${adminToken}`);
+        expect(resp.body).toEqual({
+            quiz: {
+                id: quizIds[0],
+                title: "new quiz 1 title",
+                description: "the first test quiz",
+                creator: "testuser"
+            },
+        });
+    });
+
+    test("fails for invalid id", async function () {
+        const response = await request(app)
+            .patch('/quizzes/0')
+            .send({
+                title: "new quiz 1 title",
+            });
+        expect(response.statusCode).toEqual(404);
+    });
+
+    test("fails for no update data", async function () {
+        const response = await request(app)
+            .patch(`/quizzes/${quizIds[0]}`);
+        expect(response.statusCode).toEqual(400);
+    });
+
+    // MORE TO DO HERE
+    test("more work to do here", async function () {
+        // expect(1).toEqual(2);
+    })
+})
+
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DELETE /quizzes/:id

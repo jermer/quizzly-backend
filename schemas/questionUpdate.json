@@ -1,0 +1,69 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "additionalProperties": false,
+    "required": [],
+    "properties": {
+        "qText": {
+            "type": "string",
+            "default": "",
+            "title": "The qText Schema",
+            "examples": [
+                "How many sides does a triangle have?"
+            ]
+        },
+        "rightA": {
+            "type": "string",
+            "default": "",
+            "title": "The rightA Schema",
+            "examples": [
+                "3 sides"
+            ]
+        },
+        "wrongA1": {
+            "type": "string",
+            "default": "",
+            "title": "The wrongA1 Schema",
+            "examples": [
+                "4 sides"
+            ]
+        },
+        "wrongA2": {
+            "type": "string",
+            "default": "",
+            "title": "The wrongA2 Schema",
+            "examples": [
+                "5 sides"
+            ]
+        },
+        "wrongA3": {
+            "type": "string",
+            "default": "",
+            "title": "The wrongA3 Schema",
+            "examples": [
+                "6 sides"
+            ]
+        },
+        "questionOrder": {
+            "type": "integer",
+            "default": 0,
+            "title": "The questionOrder Schema",
+            "examples": [
+                1
+            ]
+        }
+    },
+    "examples": [
+        {
+            "qText": "How many sides does a triangle have?",
+            "rightA": "3 sides",
+            "wrongA1": "4 sides",
+            "wrongA2": "5 sides",
+            "wrongA3": "6 sides",
+            "questionOrder": 1
+        }
+    ]
+}

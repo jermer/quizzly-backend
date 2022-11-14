@@ -1,0 +1,33 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "additionalProperties": false,
+    "required": [],
+    "properties": {
+        "title": {
+            "type": "string",
+            "default": "",
+            "title": "The title Schema",
+            "examples": [
+                "Shapes Quiz"
+            ]
+        },
+        "description": {
+            "type": "string",
+            "default": "",
+            "title": "The description Schema",
+            "examples": [
+                "Geometry quiz about shapes."
+            ]
+        }
+    },
+    "examples": [
+        {
+            "title": "Shapes Quiz",
+            "description": "Geometry quiz about shapes."
+        }
+    ]
+}
