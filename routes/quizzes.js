@@ -42,7 +42,10 @@ router.post('/', async function (req, res, next) {
 
 /** GET /quizzes
  * 
- *  Returns { quizzes: [ { id, title, description, creator }, ... ] }
+ * Accepts filters
+ * 
+ * Returns
+ *  { quizzes: [ { id, title, description, creator }, ... ] }
  */
 
 router.get('/', async function (req, res, next) {
