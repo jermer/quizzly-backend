@@ -11,16 +11,15 @@ class Question {
 
     /** Create a new question.
      * 
-     * Accepts { qText, rightA, wrongA1, wrongA2, wrongA3,
-     *  questionOrder, quizId }
+     * Accepts
+     *  { qText, rightA, wrongA1, wrongA2, wrongA3, quizId }
      * 
-     * Returns { id, qText, rightA, wrongA1, wrongA2, wrongA3,
-     *  questionOrder, quizId }
+     * Returns
+     *  { id, qText, rightA, wrongA1, wrongA2, wrongA3, quizId }
      */
 
     static async create(
-        { qText, rightA, wrongA1, wrongA2, wrongA3,
-            questionOrder, quizId }) {
+        { qText, rightA, wrongA1, wrongA2, wrongA3, quizId }) {
         // verify that quizId is valid
         const quizCheck = await db.query(`
             SELECT id
@@ -33,9 +32,9 @@ class Question {
 
         const result = await db.query(`
             INSERT INTO questions
-                (q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id)
+                (q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id)
             VALUES
-                ($1, $2, $3, $4, $5, $6, $7)
+                ($1, $2, $3, $4, $5, $6)
             RETURNING
                 id,
                 q_text AS "qText",
@@ -43,10 +42,8 @@ class Question {
                 wrong_a1 AS "wrongA1",
                 wrong_a2 AS "wrongA2",
                 wrong_a3 AS "wrongA3",
-                question_order AS "questionOrder",
                 quiz_id AS "quizId"`,
-            [qText, rightA, wrongA1, wrongA2, wrongA3,
-                questionOrder, quizId]);
+            [qText, rightA, wrongA1, wrongA2, wrongA3, quizId]);
         const question = result.rows[0];
         return question;
     }
@@ -57,8 +54,8 @@ class Question {
      * optional filters may include:
      * - quizId
      * 
-     * Returns [ { id, qText, rightA, wrongA1, wrongA2, wrongA3,
-     *  questionOrder, quizId }. ... ]
+     * Returns 
+     *  [ { id, qText, rightA, wrongA1, wrongA2, wrongA3, quizId }. ... ]
      */
 
     static async findAll(filters = {}) {
@@ -69,7 +66,6 @@ class Question {
                    wrong_a1 AS "wrongA1",
                    wrong_a2 AS "wrongA2",
                    wrong_a3 AS "wrongA3",
-                   question_order AS "questionOrder",
                    quiz_id AS "quizId"
             FROM questions`;
 
@@ -91,7 +87,7 @@ class Question {
         }
 
         // execute query and return results
-        query += ' ORDER BY quiz_id, question_order';
+        query += ' ORDER BY quiz_id, id';
         const results = await db.query(query, queryValues);
         return results.rows;
     }
@@ -111,7 +107,6 @@ class Question {
                wrong_a1 AS "wrongA1",
                wrong_a2 AS "wrongA2",
                wrong_a3 AS "wrongA3",
-               question_order AS "questionOrder",
                quiz_id AS "quizId"
         FROM questions
         WHERE id = $1`,
@@ -142,7 +137,6 @@ class Question {
                 wrongA1: "wrong_a1",
                 wrongA2: "wrong_a2",
                 wrongA3: "wrong_a3",
-                questionOrder: "question_order",
                 quizId: "quiz_id"
             });
         // id will be the last parameter in the query
@@ -158,7 +152,6 @@ class Question {
                       wrong_a1 AS "wrongA1",
                       wrong_a2 AS "wrongA2",
                       wrong_a3 AS "wrongA3",
-                      question_order AS "questionOrder",
                       quiz_id AS "quizId"`;
         const result = await db.query(querySQL, [...values, id]);
         const question = result.rows[0];

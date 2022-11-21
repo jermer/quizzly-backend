@@ -33,8 +33,6 @@ describe("authenticate", function () {
         });
         expect(user).toEqual({
             username: "testuser",
-            firstName: "First",
-            lastName: "Last",
             email: "testuser@email.com"
         })
     });
@@ -73,14 +71,10 @@ describe("register", function () {
         const user = await User.register({
             username: "newtestuser",
             password: "password",
-            firstName: "FName",
-            lastName: "LName",
             email: "newtestuser@email.com"
         });
         expect(user).toEqual({
             username: "newtestuser",
-            firstName: "FName",
-            lastName: "LName",
             email: "newtestuser@email.com"
         })
     });
@@ -90,8 +84,6 @@ describe("register", function () {
             await User.register({
                 username: "testuser",
                 // password: "password",
-                // firstName: "FName",
-                // lastName: "LName",
                 // email: "newtestuser@email.com"
             });
         } catch (err) {
@@ -110,14 +102,10 @@ describe("findAll", function () {
         expect(users).toEqual([
             {
                 username: "testuser",
-                firstName: "First",
-                lastName: "Last",
                 email: "testuser@email.com"
             },
             {
                 username: "testuser2",
-                firstName: "First2",
-                lastName: "Last2",
                 email: "testuser2@email.com"
             }
         ]);
@@ -133,8 +121,6 @@ describe("get", function () {
         const user = await User.get("testuser");
         expect(user).toEqual({
             username: "testuser",
-            firstName: "First",
-            lastName: "Last",
             email: "testuser@email.com",
             quizzes: expect.any(Array)
         });
@@ -155,8 +141,6 @@ describe("get", function () {
  */
 describe("update", function () {
     const updateData = {
-        firstName: "NewFirst",
-        lastName: "NewLast",
         email: "newemail@email.com"
     };
 
@@ -174,8 +158,6 @@ describe("update", function () {
         });
         expect(job).toEqual({
             username: "testuser",
-            firstName: "First",
-            lastName: "Last",
             email: "testuser@email.com",
         });
         const found = await db.query("SELECT * FROM users WHERE username = 'testuser'");

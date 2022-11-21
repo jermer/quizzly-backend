@@ -14,10 +14,11 @@ const { BadRequestError } = require("../expressError");
 
 /** POST /questions
  *
- * Accepts { qText, rightA, wrongA1, wrongA2, wrongA3, questionOrder, quizId }
+ * Accepts
+ *  { qText, rightA, wrongA1, wrongA2, wrongA3, quizId }
  *
- * Returns { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3,
- *  questionOrder, quizId } }
+ * Returns
+ *  { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3, quizId } }
  */
 
 router.post('/', async function (req, res, next) {
@@ -43,8 +44,8 @@ router.post('/', async function (req, res, next) {
 
 /** GET /questions
  * 
- * Returns { questions: [ { id, qText, rightA, wrongA1, wrongA2, wrongA3,
- *  questionOrder, quizId }, ... ] }
+ * Returns
+ *  { questions: [ { id, qText, rightA, wrongA1, wrongA2, wrongA3, quizId }, ... ] }
  */
 
 router.get('/', async function (req, res, next) {
@@ -64,8 +65,8 @@ router.get('/', async function (req, res, next) {
 
 /** GET /questions/:id
  * 
- * Returns { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3,
- *  questionOrder, quizId } }
+ * Returns
+ *  { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3, quizId } }
  */
 
 router.get('/:id', async function (req, res, next) {
@@ -81,10 +82,10 @@ router.get('/:id', async function (req, res, next) {
 /** PATCH /questions/:id
  * 
  * Accepts update data which may include the fields:
- *  { qText, rightA, wrongA1, wrongA2, wrongA3, questionOrder }
+ *  { qText, rightA, wrongA1, wrongA2, wrongA3 }
  * 
- * Returns { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3,
- *  questionOrder, quizId } }
+ * Returns
+ *  { question: { id, qText, rightA, wrongA1, wrongA2, wrongA3, quizId } }
  */
 router.patch('/:id', async function (req, res, next) {
     try {

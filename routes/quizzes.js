@@ -62,7 +62,7 @@ router.get('/', async function (req, res, next) {
  * Returns { quiz: { id, title, description, creator, questions }}
  * where questions is [ {id, id, qText, rightA,
  *                      wrongA1, wrongA2, wrongA3,
- *                      questionOrder, quizId}, ... ]
+ *                      quizId}, ... ]
  */
 
 router.get('/:id', async function (req, res, next) {

@@ -9,7 +9,6 @@
         "qText",
         "rightA",
         "wrongA1",
-        "questionOrder",
         "quizId"
     ],
     "properties": {
@@ -53,14 +52,6 @@
                 "6 sides"
             ]
         },
-        "questionOrder": {
-            "type": "integer",
-            "default": 0,
-            "title": "The questionOrder Schema",
-            "examples": [
-                1
-            ]
-        },
         "quizId": {
             "type": "integer",
             "default": 0,
@@ -77,7 +68,6 @@
             "wrongA1": "4 sides",
             "wrongA2": "5 sides",
             "wrongA3": "6 sides",
-            "questionOrder": 1,
             "quizId": 123
         }
     ]

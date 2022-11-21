@@ -13,12 +13,13 @@ async function commonBeforeAll() {
     await db.query('DELETE FROM users');
     await db.query('DELETE FROM quizzes');
     await db.query('DELETE FROM questions');
+    await db.query('DELETE FROM users_quizzes');
 
     // create some test user data
     await db.query(`
-        INSERT INTO users (username, password, first_name, last_name, email)
-        VALUES ('testuser', $1, 'First', 'Last', 'testuser@email.com'),
-               ('testuser2', $2, 'First2', 'Last2', 'testuser2@email.com')`,
+        INSERT INTO users (username, password, email)
+        VALUES ('testuser', $1, 'testuser@email.com'),
+               ('testuser2', $2, 'testuser2@email.com')`,
         [
             await bcrypt.hash("password", BCRYPT_WORK_FACTOR),
             await bcrypt.hash("password", BCRYPT_WORK_FACTOR)
@@ -35,11 +36,11 @@ async function commonBeforeAll() {
 
     // create some questions
     await db.query(`
-        INSERT INTO questions (q_text, right_a, wrong_a1, wrong_a2, wrong_a3, question_order, quiz_id)
-        VALUES ('quiz 1 first question', 'yes', 'no 1', 'no 2', 'no 3', 1, 111),
-               ('quiz 1 second question', 'yep', 'nope 1', 'nope 2', 'nope 3', 2, 111),
-               ('quiz 1 third question', 'this', 'not 1', 'not 2', 'not 3', 3, 111),
-               ('the only question on quiz two', 'correct', 'oops 1', 'oops 2', 'oops 3', 1, 222)`
+        INSERT INTO questions (q_text, right_a, wrong_a1, wrong_a2, wrong_a3, quiz_id)
+        VALUES ('quiz 1 first question', 'yes', 'no 1', 'no 2', 'no 3', 111),
+               ('quiz 1 second question', 'yep', 'nope 1', 'nope 2', 'nope 3', 111),
+               ('quiz 1 third question', 'this', 'not 1', 'not 2', 'not 3', 111),
+               ('the only question on quiz two', 'correct', 'oops 1', 'oops 2', 'oops 3', 222)`
     );
 }
 

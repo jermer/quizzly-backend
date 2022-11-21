@@ -96,11 +96,10 @@ class Quiz {
                    wrong_a1 AS "wrongA1",
                    wrong_a2 AS "wrongA2",
                    wrong_a3 AS "wrongA3",
-                   question_order AS "questionOrder",
                    quiz_id AS "quizId"
             FROM questions
             WHERE quiz_id = $1
-            ORDER BY question_order`,
+            ORDER BY id`,
             [id]);
 
         // package up result and return

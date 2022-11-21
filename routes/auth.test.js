@@ -55,8 +55,6 @@ describe("POST /auth/register", function () {
             .send({
                 username: "newuser",
                 password: "password",
-                firstName: "Fir",
-                lastName: "Las",
                 email: "firlas@email.com"
             });
         expect(response.statusCode).toEqual(201);
@@ -71,8 +69,6 @@ describe("POST /auth/register", function () {
             .send({
                 username: "testuser",
                 password: "password",
-                firstName: "Fir",
-                lastName: "Las",
                 email: "firlas@email.com"
             });
         expect(response.statusCode).toEqual(400);
@@ -83,8 +79,6 @@ describe("POST /auth/register", function () {
             .post("/auth/register")
             .send({
                 password: "password",
-                firstName: "Fir",
-                lastName: "Las",
                 email: "firlas@email.com"
             });
         expect(response.statusCode).toEqual(400);
@@ -95,32 +89,6 @@ describe("POST /auth/register", function () {
             .post("/auth/register")
             .send({
                 username: "testuser",
-                firstName: "Fir",
-                lastName: "Las",
-                email: "firlas@email.com"
-            });
-        expect(response.statusCode).toEqual(400);
-    });
-
-    test("fails for missing first name", async function () {
-        const response = await request(app)
-            .post("/auth/register")
-            .send({
-                username: "testuser",
-                password: "password",
-                lastName: "Las",
-                email: "firlas@email.com"
-            });
-        expect(response.statusCode).toEqual(400);
-    });
-
-    test("fails for missing last name", async function () {
-        const response = await request(app)
-            .post("/auth/register")
-            .send({
-                username: "testuser",
-                password: "password",
-                firstName: "Fir",
                 email: "firlas@email.com"
             });
         expect(response.statusCode).toEqual(400);
@@ -132,8 +100,6 @@ describe("POST /auth/register", function () {
             .send({
                 username: "testuser",
                 password: "password",
-                firstName: "Fir",
-                lastName: "Las",
             });
         expect(response.statusCode).toEqual(400);
     });
@@ -144,8 +110,6 @@ describe("POST /auth/register", function () {
             .send({
                 username: "testuser",
                 password: "password",
-                firstName: "Fir",
-                lastName: "Las",
                 email: "malformed-email"
             });
         expect(response.statusCode).toEqual(400);

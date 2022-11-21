@@ -30,7 +30,6 @@ describe("create", function () {
                 wrongA1: 'That one',
                 wrongA2: 'Something else',
                 wrongA3: 'None of the above',
-                questionOrder: 1,
                 quizId: 111
             });
         expect(question).toEqual(
@@ -41,7 +40,6 @@ describe("create", function () {
                 wrongA1: 'That one',
                 wrongA2: 'Something else',
                 wrongA3: 'None of the above',
-                questionOrder: 1,
                 quizId: 111
             }
         )
@@ -63,7 +61,6 @@ describe("findAll", function () {
                 wrongA1: 'no 1',
                 wrongA2: 'no 2',
                 wrongA3: 'no 3',
-                questionOrder: 1,
                 quizId: 111
             },
             {
@@ -73,7 +70,6 @@ describe("findAll", function () {
                 wrongA1: 'nope 1',
                 wrongA2: 'nope 2',
                 wrongA3: 'nope 3',
-                questionOrder: 2,
                 quizId: 111
             },
             {
@@ -83,7 +79,6 @@ describe("findAll", function () {
                 wrongA1: 'not 1',
                 wrongA2: 'not 2',
                 wrongA3: 'not 3',
-                questionOrder: 3,
                 quizId: 111
             },
             {
@@ -93,7 +88,6 @@ describe("findAll", function () {
                 wrongA1: 'oops 1',
                 wrongA2: 'oops 2',
                 wrongA3: 'oops 3',
-                questionOrder: 1,
                 quizId: 222
             },
         ]);
@@ -109,7 +103,6 @@ describe("findAll", function () {
                 wrongA1: 'oops 1',
                 wrongA2: 'oops 2',
                 wrongA3: 'oops 3',
-                questionOrder: 1,
                 quizId: 222
             },
         ]);
@@ -140,7 +133,6 @@ describe("get", function () {
             wrongA1: 'oops 1',
             wrongA2: 'oops 2',
             wrongA3: 'oops 3',
-            questionOrder: 1,
             quizId: 222
         });
     })
@@ -187,7 +179,6 @@ describe("update", function () {
             wrongA1: "New wrong answer",
             wrongA2: "",
             wrongA3: "",
-            questionOrder: expect.any(Number),
             quizId: 222
         });
     })

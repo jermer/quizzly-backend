@@ -8,8 +8,6 @@
     "required": [
         "username",
         "password",
-        "firstName",
-        "lastName",
         "email"
     ],
     "properties": {
@@ -33,26 +31,6 @@
                 "my_password"
             ]
         },
-        "firstName": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 30,
-            "default": "",
-            "title": "The firstName Schema",
-            "examples": [
-                "First"
-            ]
-        },
-        "lastName": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 30,
-            "default": "",
-            "title": "The lastName Schema",
-            "examples": [
-                "Last"
-            ]
-        },
         "email": {
             "type": "string",
             "format": "email",
@@ -69,8 +47,6 @@
         {
             "username": "my_username",
             "password": "my_password",
-            "firstName": "First",
-            "lastName": "Last",
             "email": "handle@email.com"
         }
     ]

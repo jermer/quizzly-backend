@@ -28,14 +28,10 @@ describe("GET /users", function () {
             users: [
                 {
                     username: 'testuser',
-                    firstName: 'First',
-                    lastName: 'Last',
                     email: 'testuser@email.com'
                 },
                 {
                     username: 'testuser2',
-                    firstName: 'First2',
-                    lastName: 'Last2',
                     email: 'testuser2@email.com'
                 }
             ]
@@ -54,8 +50,6 @@ describe("GET /users/:username", function () {
         expect(response.body).toEqual({
             user: {
                 username: 'testuser',
-                firstName: 'First',
-                lastName: 'Last',
                 email: 'testuser@email.com',
                 quizzes: [quizIds[0]]
             }
@@ -133,7 +127,7 @@ describe("PATCH /users/:username", function () {
         const resp = await request(app)
             .patch(`/users/nope`)
             .send({
-                firstName: "Nope",
+                email: "nope@email.com",
             })
         // .set("authorization", `Bearer ${adminToken}`);
         expect(resp.statusCode).toEqual(404);
@@ -143,7 +137,7 @@ describe("PATCH /users/:username", function () {
         const resp = await request(app)
             .patch(`/users/testuser`)
             .send({
-                firstName: 42,
+                email: 42,
             })
         // .set("authorization", `Bearer ${adminToken}`);
         expect(resp.statusCode).toEqual(400);

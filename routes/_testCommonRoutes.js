@@ -13,20 +13,17 @@ async function commonBeforeAll() {
     await db.query('DELETE from users')
     await db.query('DELETE FROM quizzes');
     await db.query('DELETE FROM questions');
+    await db.query('DELETE FROM users_quizzes');
 
     // create some test users
     const u1 = await User.register({
         username: 'testuser',
         password: 'password',
-        firstName: 'First',
-        lastName: 'Last',
         email: 'testuser@email.com'
     });
     const u2 = await User.register({
         username: 'testuser2',
         password: 'password',
-        firstName: 'First2',
-        lastName: 'Last2',
         email: 'testuser2@email.com'
     });
 
@@ -53,7 +50,6 @@ async function commonBeforeAll() {
             wrongA1: 'no 1',
             wrongA2: 'no 2',
             wrongA3: 'no 3',
-            questionOrder: 1,
             quizId: quiz1.id
         }
     );
@@ -64,7 +60,6 @@ async function commonBeforeAll() {
             wrongA1: 'nope 1',
             wrongA2: 'nope 2',
             wrongA3: 'nope 3',
-            questionOrder: 2,
             quizId: quiz1.id
         }
     );
@@ -75,7 +70,6 @@ async function commonBeforeAll() {
             wrongA1: 'not 1',
             wrongA2: 'not 2',
             wrongA3: 'not 3',
-            questionOrder: 3,
             quizId: quiz1.id
         }
     );
@@ -86,7 +80,6 @@ async function commonBeforeAll() {
             wrongA1: 'oops 1',
             wrongA2: 'oops 2',
             wrongA3: 'oops 3',
-            questionOrder: 1,
             quizId: quiz2.id
         }
     );

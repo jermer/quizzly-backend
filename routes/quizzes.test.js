@@ -141,7 +141,6 @@ describe("GET /quizzes/:id", function () {
                         wrongA1: 'oops 1',
                         wrongA2: 'oops 2',
                         wrongA3: 'oops 3',
-                        questionOrder: 1,
                         quizId: quizIds[1]
                     }
                 ]

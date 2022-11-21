@@ -19,7 +19,7 @@ class User {
     /** Authenticate user
      * 
      * Accepts { username, password } 
-     * Returns { username, firstName, lastName, email }
+     * Returns { username, email }
      * 
      * Throws UnauthorizedError if incorrect username/password
      */
@@ -29,8 +29,6 @@ class User {
         const result = await db.query(
             `SELECT username,
                     password,
-                    first_name as "firstName",
-                    last_name as "lastName",
                     email
              FROM users
              WHERE username = $1`,
@@ -54,14 +52,14 @@ class User {
 
     /** Register new user
      * 
-     * Accepts { username, password, firstName, lastName, email } 
-     * Returns { username, firstName, lastName, email }
+     * Accepts { username, password, email } 
+     * Returns { username, email }
      * 
      * Throws BadRequestError if username already exists in database
      */
 
     static async register(
-        { username, password, firstName, lastName, email }) {
+        { username, password, email }) {
         // check to see whether this username is already taken
         const dupCheck = await db.query(`
             SELECT username
@@ -77,19 +75,15 @@ class User {
         // add user to database
         const result = await db.query(`
             INSERT INTO users
-                (username, password, first_name, last_name, email)
+                (username, password, email)
             VALUES
-                ($1, $2, $3, $4, $5)
+                ($1, $2, $3)
             RETURNING
                 username,
-                first_name as "firstName",
-                last_name as "lastName",
                 email`,
             [
                 username,
                 hashedPassword,
-                firstName,
-                lastName,
                 email
             ]);
         const user = result.rows[0];
@@ -98,14 +92,12 @@ class User {
 
     /** Get list of all users
      * 
-     * Returns [ { username, firstName, lastName, email }, ... ]
+     * Returns [ { username, email }, ... ]
      */
 
     static async findAll() {
         const result = await db.query(`
             SELECT username,
-                   first_name AS "firstName",
-                   last_name AS "lastName",
                    email
             FROM users
             ORDER BY username`
@@ -116,7 +108,7 @@ class User {
     /** Get details of specific user
      * 
      * Accepts username
-     * Returns { username, firstName, lastName, email, [quizzes] }
+     * Returns { username, email, [quizzes] }
      * 
      * Where [quizzes] = [ {id}, ... ]
      * 
@@ -126,8 +118,6 @@ class User {
     static async get(username) {
         const result = await db.query(`
             SELECT username,
-                   first_name AS "firstName",
-                   last_name AS "lastName",
                    email
             FROM users
             WHERE username = $1`,
@@ -165,11 +155,7 @@ class User {
         }
 
         const { setCols, values } = sqlForPartialUpdate(
-            data,
-            {
-                firstName: "first_name",
-                lastName: "last_name"
-            });
+            data, {});
         // username will be the last parameter in the query
         const usernameVarIdx = "$" + (values.length + 1);
 
@@ -178,8 +164,6 @@ class User {
             SET ${setCols}
             WHERE username = ${usernameVarIdx}
             RETURNING username,
-                      first_name AS "firstName",
-                      last_name AS "lastName",
                       email`;
         const result = await db.query(querySQL, [...values, username]);
         const user = result.rows[0];

@@ -97,7 +97,6 @@ describe("get", function () {
                     wrongA1: 'no 1',
                     wrongA2: 'no 2',
                     wrongA3: 'no 3',
-                    questionOrder: 1,
                     quizId: 111
                 },
                 {
@@ -107,7 +106,6 @@ describe("get", function () {
                     wrongA1: 'nope 1',
                     wrongA2: 'nope 2',
                     wrongA3: 'nope 3',
-                    questionOrder: 2,
                     quizId: 111
                 },
                 {
@@ -117,7 +115,6 @@ describe("get", function () {
                     wrongA1: 'not 1',
                     wrongA2: 'not 2',
                     wrongA3: 'not 3',
-                    questionOrder: 3,
                     quizId: 111
                 }
             ]
