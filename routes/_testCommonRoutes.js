@@ -40,7 +40,14 @@ async function commonBeforeAll() {
             description: 'the second test quiz',
             creator: 'testuser2'
         });
-    quizIds.push(quiz1.id, quiz2.id);
+    const quiz3 = await Quiz.create(
+        {
+            title: 'quiz three',
+            description: 'the third test quiz',
+            creator: 'testuser',
+            isPublic: true
+        });
+    quizIds.push(quiz1.id, quiz2.id, quiz3.id);
 
     // create some test question data
     const quest1 = await Question.create(

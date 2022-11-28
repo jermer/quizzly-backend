@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../db");
-const { NotFoundError } = require("../expressError");
+const { NotFoundError, BadRequestError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class Quiz {
@@ -28,7 +28,8 @@ class Quiz {
      * no filters are applied by default
      * optional filters may include:
      * - searchString (finds case-insensitive, partial matches to title or description)
-     * - creator
+     * - creator (username)
+     * - isPublic (true/false)
      * 
      * Returns [ {id, title, description, creator }, ... ]
      */
@@ -40,7 +41,7 @@ class Quiz {
         let whereExpressions = [];
         let queryValues = [];
 
-        const { searchString, creator } = filters;
+        let { searchString, creator, isPublic } = filters;
 
         // build filter for searchString
         if (searchString) {
@@ -55,7 +56,24 @@ class Quiz {
         // build filter for creator
         if (creator) {
             queryValues.push(creator);
-            whereExpressions.push(`creator = $${queryValues.length}`)
+            whereExpressions.push(`creator = $${queryValues.length}`);
+        }
+
+        // build filter for isPublic   
+        if (isPublic) {
+            // check the type of the parameter
+            if (typeof isPublic !== 'boolean'
+                && isPublic !== 'true'
+                && isPublic !== 'false'
+            ) {
+                throw new BadRequestError("isPublic must be either true or false");
+            }
+            // if the parameter is not boolean, interpret the string
+            if (typeof isPublic !== 'boolean') {
+                isPublic = (isPublic === 'true');
+            }
+            queryValues.push(isPublic);
+            whereExpressions.push(`is_public = $${queryValues.length}`);
         }
 
         // add any filtering expressions to the query
@@ -64,6 +82,7 @@ class Quiz {
         }
 
         // execute query and return results
+        query += ' ORDER BY id';
         const results = await db.query(query, queryValues);
         return results.rows;
     }

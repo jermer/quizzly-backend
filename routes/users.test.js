@@ -51,7 +51,7 @@ describe("GET /users/:username", function () {
             user: {
                 username: 'testuser',
                 email: 'testuser@email.com',
-                quizzes: [quizIds[0]]
+                quizzes: [quizIds[0], quizIds[2]]
             }
         })
     });

@@ -73,7 +73,79 @@ describe("findAll", function () {
         ]);
     });
 
-    // TODO: test filtering
+    test("works: filter quizzes by searchString", async function () {
+        let quizzes = await Quiz.findAll({ searchString: 'two' });
+        // should find only 'two' in quiz two title
+        expect(quizzes).toEqual([
+            {
+                id: 222,
+                title: 'quiz two',
+                description: 'the second test quiz',
+                isPublic: false,
+                creator: 'testuser2'
+            }
+        ]);
+    })
+
+    test("works: filter quizzes by searchString", async function () {
+        let quizzes = await Quiz.findAll({ searchString: 'on' });
+        // should find 'on' in quiz one title and quiz two description
+        expect(quizzes).toEqual([
+            {
+                id: 111,
+                title: 'quiz one',
+                description: 'the first test quiz',
+                isPublic: false,
+                creator: 'testuser'
+            },
+            {
+                id: 222,
+                title: 'quiz two',
+                description: 'the second test quiz',
+                isPublic: false,
+                creator: 'testuser2'
+            }
+        ]);
+    })
+
+    test("works: filter quizzes by creator", async function () {
+        let quizzes = await Quiz.findAll({ creator: 'testuser2' });
+        expect(quizzes).toEqual([
+            {
+                id: 222,
+                title: 'quiz two',
+                description: 'the second test quiz',
+                isPublic: false,
+                creator: 'testuser2'
+            }
+        ]);
+    })
+
+    test("works: filter quizzes by creator", async function () {
+        let quizzes = await Quiz.findAll({ creator: 'nosuchuser' });
+        expect(quizzes).toEqual([]);
+    })
+
+    test("works: filter quizzes by isPublic", async function () {
+        let quizzes = await Quiz.findAll({ isPublic: true });
+        expect(quizzes).toEqual([
+            {
+                id: 333,
+                title: 'quiz three',
+                description: 'the third test quiz',
+                isPublic: true,
+                creator: 'testuser'
+            }
+        ]);
+    })
+
+    test("fails if isPublic is not boolean value", async function () {
+        try {
+            let quizzes = await Quiz.findAll({ isPublic: 'oops' });
+        } catch (err) {
+            expect(err instanceof BadRequestError).toBeTruthy();
+        }
+    })
 })
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

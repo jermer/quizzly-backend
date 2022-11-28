@@ -95,19 +95,44 @@ describe("POST /quizzes", function () {
  */
 
 describe("GET /quizzes", function () {
-    test("works", async function () {
+    test("works: all quizzes", async function () {
         const response = await request(app).get("/quizzes");
         expect(response.body).toEqual({
             quizzes: [
                 {
-                    id: expect.any(Number),
+                    id: quizIds[0],
                     title: 'quiz one',
                     description: 'the first test quiz',
                     isPublic: false,
                     creator: 'testuser'
                 },
                 {
-                    id: expect.any(Number),
+                    id: quizIds[1],
+                    title: 'quiz two',
+                    description: 'the second test quiz',
+                    isPublic: false,
+                    creator: 'testuser2'
+                },
+                {
+                    id: quizIds[2],
+                    title: 'quiz three',
+                    description: 'the third test quiz',
+                    isPublic: true,
+                    creator: 'testuser'
+                }
+            ]
+        })
+    });
+
+    test("works: filter quizzes by searchString", async function () {
+        const response = await request(app)
+            .get("/quizzes")
+            .query({ searchString: 'two' });
+        // should find only 'two' in quiz two title
+        expect(response.body).toEqual({
+            quizzes: [
+                {
+                    id: quizIds[1],
                     title: 'quiz two',
                     description: 'the second test quiz',
                     isPublic: false,
@@ -115,8 +140,82 @@ describe("GET /quizzes", function () {
                 }
             ]
         })
-    });
+    })
 
+    test("works: filter quizzes by searchString", async function () {
+        const response = await request(app)
+            .get("/quizzes")
+            .query({ searchString: 'on' });
+        // should find 'on' in quiz one title and quiz two description
+        expect(response.body).toEqual({
+            quizzes: [
+                {
+                    id: quizIds[0],
+                    title: 'quiz one',
+                    description: 'the first test quiz',
+                    isPublic: false,
+                    creator: 'testuser'
+                },
+                {
+                    id: quizIds[1],
+                    title: 'quiz two',
+                    description: 'the second test quiz',
+                    isPublic: false,
+                    creator: 'testuser2'
+                }
+            ]
+        })
+    })
+
+    test("works: filter quizzes by creator", async function () {
+        const response = await request(app)
+            .get("/quizzes")
+            .query({ creator: 'testuser2' });
+        expect(response.body).toEqual({
+            quizzes: [
+                {
+                    id: quizIds[1],
+                    title: 'quiz two',
+                    description: 'the second test quiz',
+                    isPublic: false,
+                    creator: 'testuser2'
+                }
+            ]
+        })
+    })
+
+    test("works: filter quizzes by creator", async function () {
+        const response = await request(app)
+            .get("/quizzes")
+            .query({ creator: 'testuser3' });
+        expect(response.body).toEqual({
+            quizzes: []
+        })
+    })
+
+    test("works: filter quizzes by isPublic", async function () {
+        const response = await request(app)
+            .get("/quizzes")
+            .query({ isPublic: true });
+        expect(response.body).toEqual({
+            quizzes: [
+                {
+                    id: quizIds[2],
+                    title: 'quiz three',
+                    description: 'the third test quiz',
+                    isPublic: true,
+                    creator: 'testuser'
+                }
+            ]
+        })
+    })
+
+    test("fails if isPublic is not boolean value", async function () {
+        const response = await request(app)
+            .get("/quizzes")
+            .query({ isPublic: "oops" });
+        expect(response.statusCode).toEqual(400);
+    })
 });
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
