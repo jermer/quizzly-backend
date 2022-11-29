@@ -37,7 +37,6 @@ describe("GET /users", function () {
             ]
         })
     });
-
 });
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -60,7 +59,6 @@ describe("GET /users/:username", function () {
         const response = await request(app).get('/users/nobody');
         expect(response.statusCode).toEqual(404);
     });
-
 });
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -182,5 +180,45 @@ describe("DELETE /users/:username", function () {
     test("fails for invalid username", async function () {
         const response = await request(app).delete('/users/nobody');
         expect(response.statusCode).toEqual(404);
+    });
+});
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * POST /users/:username/quizzes/:quizId
+ */
+
+describe("POST /users/:username/quizzes/:quizId", function () {
+    test("works", async function () {
+        let response = await request(app)
+            .post(`/users/testuser/quizzes/${quizIds[0]}`)
+            .send({ score: 4 });
+        expect(response.body).toEqual({
+            recorded: {
+                username: 'testuser',
+                quizId: quizIds[0],
+                score: 4
+            }
+        })
+    });
+
+    test("fails for invalid username", async function () {
+        const response = await request(app)
+            .post(`/users/nobody/quizzes/${quizIds[0]}`)
+            .send({ score: 4 });
+        expect(response.statusCode).toEqual(404);
+    });
+
+    test("fails for invalid quiz id", async function () {
+        const response = await request(app)
+            .post(`/users/testuser/quizzes/0`)
+            .send({ score: 4 });
+        expect(response.statusCode).toEqual(404);
+    });
+
+    test("fails for invalid quiz id", async function () {
+        const response = await request(app)
+            .post(`/users/testuser/quizzes/${quizIds[0]}}`)
+            .send({ score: "oops" });
+        expect(response.statusCode).toEqual(400);
     });
 });

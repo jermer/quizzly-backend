@@ -211,3 +211,33 @@ describe("remove", function () {
         }
     });
 })
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Record quiz score
+ */
+
+describe("record quiz score", function () {
+    test("works", async function () {
+        await User.recordQuizScore('testuser', 111, 5);
+        const found = await db.query("SELECT * FROM users_quizzes");
+        expect(found.rows.length).toEqual(1);
+    })
+
+    test("fails for invalid username", async function () {
+        try {
+            await User.recordQuizScore('badusername', 111, 5);
+            fail();
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy();
+        }
+    })
+
+    test("fails for invalid quiz id", async function () {
+        try {
+            await User.recordQuizScore('testuser', 0, 5);
+            fail();
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy();
+        }
+    })
+})

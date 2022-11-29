@@ -193,6 +193,37 @@ class User {
         if (!user)
             throw new NotFoundError(`No user found with username ${username}`);
     }
+
+    /**
+     * 
+     */
+    static async recordQuizScore(username, quizId, score) {
+        // check for valid username
+        const userCheck = await db.query(`
+            SELECT username
+            FROM users
+            WHERE username = $1`,
+            [username]);
+        const user = userCheck.rows[0];
+
+        if (!user) throw new NotFoundError(`No user found with username ${username}`);
+
+        // check for valid quiz_id
+        const quizCheck = await db.query(`
+            SELECT id
+            FROM quizzes
+            WHERE id = $1`,
+            [quizId]);
+        const quiz = quizCheck.rows[0];
+
+        if (!quiz) throw new NotFoundError(`No quiz found with id ${quizId}`);
+
+        // create new entry in the join table
+        await db.query(`
+            INSERT INTO users_quizzes (username, quiz_id, score)
+            VALUES ($1, $2, $3)`,
+            [username, quizId, score]);
+    }
 }
 
 module.exports = User;

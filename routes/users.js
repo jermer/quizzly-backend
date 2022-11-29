@@ -82,4 +82,27 @@ router.delete('/:username', async function (req, res, next) {
     }
 })
 
+/** POST /users/:username/quizzes/:quizId 
+ * 
+ * Returns { recorded: { username, quizId, score } }
+ */
+
+router.post('/:username/quizzes/:quizId', async function (req, res, next) {
+    try {
+        const username = req.params.username;
+        const quizId = +req.params.quizId;
+        const score = +req.body.score;
+
+        // validate score is an integer
+        if (!Number.isInteger(score))
+            throw new BadRequestError("Score must be an integer.");
+
+        await User.recordQuizScore(username, quizId, score);
+        return res.json({ recorded: { username, quizId, score } });
+
+    } catch (err) {
+        return next(err);
+    }
+})
+
 module.exports = router;

@@ -1,3 +1,7 @@
+--
+-- Script for setting up and seeding the db
+--
+
 \echo 'Delete and recreate quizzly db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
