@@ -89,8 +89,8 @@ describe("register", function () {
         } catch (err) {
             expect(err instanceof BadRequestError).toBeTruthy();
         }
-    })
-})
+    });
+});
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * findAll
@@ -110,7 +110,7 @@ describe("findAll", function () {
             }
         ]);
     });
-})
+});
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Get
@@ -134,7 +134,7 @@ describe("get", function () {
             expect(err instanceof NotFoundError).toBeTruthy();
         }
     });
-})
+});
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Update
@@ -182,8 +182,7 @@ describe("update", function () {
             expect(err instanceof BadRequestError).toBeTruthy();
         }
     });
-
-})
+});
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Remove
@@ -210,7 +209,7 @@ describe("remove", function () {
             expect(err instanceof NotFoundError).toBeTruthy();
         }
     });
-})
+});
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Record quiz score
@@ -221,7 +220,7 @@ describe("record quiz score", function () {
         await User.recordQuizScore('testuser', 111, 5);
         const found = await db.query("SELECT * FROM users_quizzes");
         expect(found.rows.length).toEqual(1);
-    })
+    });
 
     test("fails for invalid username", async function () {
         try {
@@ -230,7 +229,7 @@ describe("record quiz score", function () {
         } catch (err) {
             expect(err instanceof NotFoundError).toBeTruthy();
         }
-    })
+    });
 
     test("fails for invalid quiz id", async function () {
         try {
@@ -239,5 +238,5 @@ describe("record quiz score", function () {
         } catch (err) {
             expect(err instanceof NotFoundError).toBeTruthy();
         }
-    })
-})
+    });
+});
