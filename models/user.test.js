@@ -122,7 +122,8 @@ describe("get", function () {
         expect(user).toEqual({
             username: "testuser",
             email: "testuser@email.com",
-            quizzes: expect.any(Array)
+            quizzes: expect.any(Array),
+            scores: expect.any(Array)
         });
     });
 

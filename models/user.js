@@ -108,9 +108,10 @@ class User {
     /** Get details of specific user
      * 
      * Accepts username
-     * Returns { username, email, [quizzes] }
+     * Returns { username, email, quizzes, scores }
      * 
-     * Where [quizzes] = [ {id}, ... ]
+     * Where quizzes = [ {id}, ... ]
+     * and   scores = [ {id, score}, ... ]
      * 
      * Throws NotFoundError if invalid username
      */
@@ -127,13 +128,21 @@ class User {
         if (!user)
             throw new NotFoundError(`No user found with username ${username}`);
 
+        // get list of quiz ids created by this user
         const quizResults = await db.query(`
             SELECT id
             FROM quizzes
             WHERE creator = $1`,
             [username]);
-
         user.quizzes = quizResults.rows.map(q => q.id);
+
+        // get list of quiz scores for quizzes this user has played
+        const scoreResults = await db.query(`
+            SELECT quiz_id AS "quizId", score
+            FROM users_quizzes
+            WHERE username = $1`,
+            [username]);
+        user.scores = scoreResults.rows.map(s => ({ quizId: s.quizId, score: s.score }));
 
         return user;
     }
@@ -182,6 +191,7 @@ class User {
      * 
      * Throws NotFoundError if invalid username
      */
+
     static async remove(username) {
         const result = await db.query(`
             DELETE FROM users
@@ -194,9 +204,14 @@ class User {
             throw new NotFoundError(`No user found with username ${username}`);
     }
 
-    /**
+    /** Record user score on a particular quiz
      * 
+     * Accepts username, quizId, score
+     * Returns undefined
+     * 
+     * Throws NotFoundError is invalid username or quizId 
      */
+
     static async recordQuizScore(username, quizId, score) {
         // check for valid username
         const userCheck = await db.query(`
