@@ -42,6 +42,30 @@ router.post("/token", async function (req, res, next) {
     }
 });
 
+/** POST /auth/validate
+ * 
+ */
+
+router.post("/validate", async function (req, res, next) {
+    try {
+        const validator = jsonschema.validate(req.body, userLoginSchema);
+        if (!validator.valid) {
+            // invalid login data format
+            const errs = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errs);
+        }
+
+        // authenticate user, will throw error if invalid
+        const user = await User.authenticate(req.body);
+
+        // if we've made it this far, all is well
+        return res.json({ success: true });
+
+    } catch (err) {
+        return next(res.json({ success: false }));
+    }
+});
+
 /** POST /auth/register 
  * 
  * Accepts {}

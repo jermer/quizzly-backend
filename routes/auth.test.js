@@ -45,6 +45,36 @@ describe("POST /auth/token", function () {
 });
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * POST /auth/validate
+ */
+
+describe("POST /auth/validate", function () {
+    test("works", async function () {
+        const response = await request(app)
+            .post("/auth/validate")
+            .send({
+                username: "testuser",
+                password: "password"
+            });
+        expect(response.body).toEqual({
+            "success": true
+        });
+    });
+
+    test("fails for wrong password", async function () {
+        const response = await request(app)
+            .post("/auth/validate")
+            .send({
+                username: "testuser",
+                password: "wrongpassword"
+            });
+        expect(response.body).toEqual({
+            "success": false
+        });
+    });
+});
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * POST /auth/register
  */
 
