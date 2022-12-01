@@ -10,14 +10,19 @@ const userUpdateSchema = require("../schemas/userUpdate.json");
 
 const User = require("../models/user");
 const { BadRequestError } = require("../expressError");
-const { ensureCorrectUserOrAdmin } = require("../middleware/auth");
+const {
+    ensureAdmin,
+    ensureCorrectUserOrAdmin
+} = require("../middleware/auth");
 
 /** GET /users
  * 
- *  Returns { users: [ { username, firstName, lastName, email }, ... ] }
+ *  Returns { users: [ { username, email, isAdmin }, ... ] }
+ * 
+ *  Authorization required: admin
  */
 
-router.get('/', async function (req, res, next) {
+router.get('/', ensureAdmin, async function (req, res, next) {
     try {
         const users = await User.findAll();
         return res.json({ users });
@@ -29,12 +34,14 @@ router.get('/', async function (req, res, next) {
 
 /** GET /users/:username
  * 
- * Returns { user: { username, firstName, lastName, email }}
+ * Returns { user: { username, email, isAdmin, quizzes, scores }}
+ *  where quizzes is [ quiz_id, ... ]
+ *  where scores is [ { quiz_id, score }, ... ]
  * 
- * AND QUIZZES...!
+ * Authorization required: admin or the requested user
  */
 
-router.get('/:username', async function (req, res, next) {
+router.get('/:username', ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
         const user = await User.get(req.params.username);
         return res.json({ user });
@@ -47,12 +54,14 @@ router.get('/:username', async function (req, res, next) {
 /** PATCH /users/:username
  * 
  * Data can include:
- *   { firstName, lastName, password, email }
+ *   { password, email, isAdmin }
  *
- * Returns { username, firstName, lastName, email }
+ * Returns { username, email, isAdmin }
+ * 
+ * Authorization required: admin or the requested user
  **/
 
-router.patch("/:username", async function (req, res, next) {
+router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
         const validator = jsonschema.validate(req.body, userUpdateSchema);
         if (!validator.valid) {
@@ -70,10 +79,12 @@ router.patch("/:username", async function (req, res, next) {
 
 /** DELETE /users/:username 
  * 
- * Returns { deleted: :username }
+ * Returns { deleted: username }
+ * 
+ * Authorization required: admin or the requested user
  */
 
-router.delete('/:username', async function (req, res, next) {
+router.delete('/:username', ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
         await User.remove(req.params.username);
         return res.json({ deleted: req.params.username });
@@ -86,9 +97,11 @@ router.delete('/:username', async function (req, res, next) {
 /** POST /users/:username/quizzes/:quizId 
  * 
  * Returns { recorded: { username, quizId, score } }
+ * 
+ * Authorization required: admin or the requested user
  */
 
-router.post('/:username/quizzes/:quizId', async function (req, res, next) {
+router.post('/:username/quizzes/:quizId', ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
         const username = req.params.username;
         const quizId = +req.params.quizId;

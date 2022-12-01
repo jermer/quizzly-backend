@@ -117,7 +117,7 @@ async function commonAfterAll() {
 }
 
 const testUserToken = createToken({ username: "testuser", isAdmin: false });
-const testUsersToken = createToken({ username: "testuser2", isAdmin: false });
+const testUser2Token = createToken({ username: "testuser2", isAdmin: false });
 const testAdminToken = createToken({ username: "testadmin", isAdmin: true });
 
 module.exports = {
@@ -127,5 +127,7 @@ module.exports = {
     commonAfterAll,
     quizIds,
     questionIds,
-    testUserToken
+    testUserToken,
+    testUser2Token,
+    testAdminToken
 }
