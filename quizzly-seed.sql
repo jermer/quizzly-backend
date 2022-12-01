@@ -1,13 +1,16 @@
 
 -- two sample users
 -- both have password set to 'password'
-INSERT INTO users (username, password, email)
+INSERT INTO users (username, password, email, is_admin)
 VALUES ('testuser',
         '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q',
-        'test@test.com'),
+        'test@test.com', FALSE),
         ('testuser2',
         '$2b$12$Ayyeojp42gqqpZ12NX8WI.86.a2U0pPkm7/aVXTsAN5fPcBCSjv0.',
-        'test2@test2.com');
+        'test2@test.com', FALSE),
+        ('testadmin',
+        '$2b$12$nXZXjcVcmh7b.YXNgeFk3OXfCie3F1QUKNDkUSKXa83TEjhcNg20a',
+        'admin@test.com', TRUE);
 
 -- three sample quizzes
 INSERT INTO quizzes (id, title, description, creator, is_public)

@@ -10,6 +10,7 @@ const {
     commonAfterEach,
     commonAfterAll,
     quizIds,
+    testUserToken
 } = require("./_testCommonRoutes");
 
 beforeAll(commonBeforeAll);
@@ -27,12 +28,19 @@ describe("GET /users", function () {
         expect(response.body).toEqual({
             users: [
                 {
+                    username: 'testadmin',
+                    email: 'testadmin@email.com',
+                    isAdmin: true
+                },
+                {
                     username: 'testuser',
-                    email: 'testuser@email.com'
+                    email: 'testuser@email.com',
+                    isAdmin: false
                 },
                 {
                     username: 'testuser2',
-                    email: 'testuser2@email.com'
+                    email: 'testuser2@email.com',
+                    isAdmin: false
                 }
             ]
         })
@@ -45,11 +53,14 @@ describe("GET /users", function () {
 
 describe("GET /users/:username", function () {
     test("works", async function () {
-        const response = await request(app).get(`/users/testuser`);
+        const response = await request(app)
+            .get(`/users/testuser`)
+            .set("authorization", `Bearer ${testUserToken}`);
         expect(response.body).toEqual({
             user: {
                 username: 'testuser',
                 email: 'testuser@email.com',
+                isAdmin: false,
                 quizzes: [quizIds[0], quizIds[2]],
                 scores: []
             }

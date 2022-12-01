@@ -17,10 +17,12 @@ async function commonBeforeAll() {
 
     // create some test user data
     await db.query(`
-        INSERT INTO users (username, password, email)
-        VALUES ('testuser', $1, 'testuser@email.com'),
-               ('testuser2', $2, 'testuser2@email.com')`,
+        INSERT INTO users (username, password, email, is_admin)
+        VALUES ('testuser', $1, 'testuser@email.com', false),
+               ('testuser2', $2, 'testuser2@email.com', false),
+               ('testadmin', $3, 'testadmin@email.com', true)`,
         [
+            await bcrypt.hash("password", BCRYPT_WORK_FACTOR),
             await bcrypt.hash("password", BCRYPT_WORK_FACTOR),
             await bcrypt.hash("password", BCRYPT_WORK_FACTOR)
         ]

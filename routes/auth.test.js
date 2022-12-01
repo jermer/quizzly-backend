@@ -33,6 +33,16 @@ describe("POST /auth/token", function () {
         });
     });
 
+    test("fails for invalid username", async function () {
+        const response = await request(app)
+            .post("/auth/token")
+            .send({
+                username: "badusername",
+                password: "password"
+            });
+        expect(response.statusCode).toEqual(401);
+    });
+
     test("fails for wrong password", async function () {
         const response = await request(app)
             .post("/auth/token")
@@ -41,6 +51,25 @@ describe("POST /auth/token", function () {
                 password: "wrongpassword"
             });
         expect(response.statusCode).toEqual(401);
+    });
+
+    test("fails for missing data", async function () {
+        const response = await request(app)
+            .post("/auth/token")
+            .send({
+                username: "testuser",
+            });
+        expect(response.statusCode).toEqual(400);
+    });
+
+    test("fails for invalid data", async function () {
+        const response = await request(app)
+            .post("/auth/token")
+            .send({
+                username: 0,
+                password: "password"
+            });
+        expect(response.statusCode).toEqual(400);
     });
 });
 
@@ -85,7 +114,8 @@ describe("POST /auth/register", function () {
             .send({
                 username: "newuser",
                 password: "password",
-                email: "firlas@email.com"
+                email: "firlas@email.com",
+                isAdmin: false
             });
         expect(response.statusCode).toEqual(201);
         expect(response.body).toEqual({
@@ -99,7 +129,8 @@ describe("POST /auth/register", function () {
             .send({
                 username: "testuser",
                 password: "password",
-                email: "firlas@email.com"
+                email: "firlas@email.com",
+                isAdmin: false
             });
         expect(response.statusCode).toEqual(400);
     });

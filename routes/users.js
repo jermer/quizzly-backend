@@ -10,6 +10,7 @@ const userUpdateSchema = require("../schemas/userUpdate.json");
 
 const User = require("../models/user");
 const { BadRequestError } = require("../expressError");
+const { ensureCorrectUserOrAdmin } = require("../middleware/auth");
 
 /** GET /users
  * 

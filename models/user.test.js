@@ -33,7 +33,8 @@ describe("authenticate", function () {
         });
         expect(user).toEqual({
             username: "testuser",
-            email: "testuser@email.com"
+            email: "testuser@email.com",
+            isAdmin: false
         })
     });
 
@@ -71,20 +72,45 @@ describe("register", function () {
         const user = await User.register({
             username: "newtestuser",
             password: "password",
-            email: "newtestuser@email.com"
+            email: "newtestuser@email.com",
+            isAdmin: false
         });
         expect(user).toEqual({
             username: "newtestuser",
-            email: "newtestuser@email.com"
-        })
+            email: "newtestuser@email.com",
+            isAdmin: false
+        });
+        const found = await db.query("SELECT * FROM users WHERE username = 'newtestuser'");
+        expect(found.rows.length).toEqual(1);
+        expect(found.rows[0].is_admin).toEqual(false);
+        expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
+    });
+
+    test("works with isAdmin", async function () {
+        const user = await User.register({
+            username: "newtestuser",
+            password: "password",
+            email: "newtestuser@email.com",
+            isAdmin: true
+        });
+        expect(user).toEqual({
+            username: "newtestuser",
+            email: "newtestuser@email.com",
+            isAdmin: true
+        });
+        const found = await db.query("SELECT * FROM users WHERE username = 'newtestuser'");
+        expect(found.rows.length).toEqual(1);
+        expect(found.rows[0].is_admin).toEqual(true);
+        expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
     });
 
     test("fails for duplicate username", async function () {
         try {
             await User.register({
                 username: "testuser",
-                // password: "password",
-                // email: "newtestuser@email.com"
+                password: "password",
+                email: "newtestuser@email.com",
+                isAdmin: false
             });
         } catch (err) {
             expect(err instanceof BadRequestError).toBeTruthy();
@@ -101,12 +127,19 @@ describe("findAll", function () {
         const users = await User.findAll();
         expect(users).toEqual([
             {
+                username: "testadmin",
+                email: "testadmin@email.com",
+                isAdmin: true
+            },
+            {
                 username: "testuser",
-                email: "testuser@email.com"
+                email: "testuser@email.com",
+                isAdmin: false
             },
             {
                 username: "testuser2",
-                email: "testuser2@email.com"
+                email: "testuser2@email.com",
+                isAdmin: false
             }
         ]);
     });
@@ -122,6 +155,7 @@ describe("get", function () {
         expect(user).toEqual({
             username: "testuser",
             email: "testuser@email.com",
+            isAdmin: false,
             quizzes: expect.any(Array),
             scores: expect.any(Array)
         });
@@ -142,7 +176,8 @@ describe("get", function () {
  */
 describe("update", function () {
     const updateData = {
-        email: "newemail@email.com"
+        email: "newemail@email.com",
+        isAdmin: true
     };
 
     test("works", async function () {
@@ -160,6 +195,7 @@ describe("update", function () {
         expect(job).toEqual({
             username: "testuser",
             email: "testuser@email.com",
+            isAdmin: false
         });
         const found = await db.query("SELECT * FROM users WHERE username = 'testuser'");
         expect(found.rows.length).toEqual(1);

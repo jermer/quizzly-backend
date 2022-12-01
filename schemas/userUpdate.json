@@ -27,13 +27,21 @@
             "examples": [
                 "handle@email.com"
             ]
+        },
+        "isAdmin": {
+            "type": "boolean",
+            "default": false,
+            "title": "The isAdmin Schema",
+            "examples": [
+                false
+            ]
         }
     },
     "examples": [
         {
-            "username": "my_username",
             "password": "my_password",
-            "email": "handle@email.com"
+            "email": "handle@email.com",
+            "isAdmin": false
         }
     ]
 }

@@ -5,6 +5,9 @@ const Quiz = require("../models/quiz");
 const Question = require("../models/question");
 const User = require("../models/user");
 
+const { createToken } = require("../helpers/tokens");
+const { create } = require("../models/quiz");
+
 const quizIds = [];
 const questionIds = [];
 
@@ -19,12 +22,20 @@ async function commonBeforeAll() {
     const u1 = await User.register({
         username: 'testuser',
         password: 'password',
-        email: 'testuser@email.com'
+        email: 'testuser@email.com',
+        isAdmin: false
     });
     const u2 = await User.register({
         username: 'testuser2',
         password: 'password',
-        email: 'testuser2@email.com'
+        email: 'testuser2@email.com',
+        isAdmin: false
+    });
+    const admin = await User.register({
+        username: 'testadmin',
+        password: 'password',
+        email: 'testadmin@email.com',
+        isAdmin: true
     });
 
     // create some test quiz data
@@ -105,6 +116,9 @@ async function commonAfterAll() {
     await db.end();
 }
 
+const testUserToken = createToken({ username: "testuser", isAdmin: false });
+const testUsersToken = createToken({ username: "testuser2", isAdmin: false });
+const testAdminToken = createToken({ username: "testadmin", isAdmin: true });
 
 module.exports = {
     commonBeforeAll,
@@ -112,5 +126,6 @@ module.exports = {
     commonAfterEach,
     commonAfterAll,
     quizIds,
-    questionIds
+    questionIds,
+    testUserToken
 }

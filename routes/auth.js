@@ -44,6 +44,10 @@ router.post("/token", async function (req, res, next) {
 
 /** POST /auth/validate
  * 
+ * Accepts { username, password }
+ * 
+ * Returns { success: true/false }, depending on whether the
+ * given username and password match.
  */
 
 router.post("/validate", async function (req, res, next) {
@@ -68,7 +72,7 @@ router.post("/validate", async function (req, res, next) {
 
 /** POST /auth/register 
  * 
- * Accepts {}
+ * Accepts { username, password, email, isAdmin }
  * 
  * Returns { token }, which can be used to authenticate
  * future requests.
