@@ -35,6 +35,8 @@ CREATE TABLE users_quizzes (
     REFERENCES users ON DELETE CASCADE,
   quiz_id INTEGER NOT NULL
     REFERENCES quizzes ON DELETE CASCADE,
-  score INTEGER NOT NULL,
+  last_score INTEGER NOT NULL,
+  best_score INTEGER NOT NULL,
+  time_taken TIMESTAMP (0) NOT NULL,
   PRIMARY KEY (username, quiz_id)
 );

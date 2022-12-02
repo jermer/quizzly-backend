@@ -140,13 +140,42 @@ class User {
             [username]);
         user.quizzes = quizResults.rows.map(q => q.id);
 
+
+        `
+SELECT users_quizzes.quiz_id, title, time_taken, count(questions.id) AS"num_questions" FROM users_quizzes                                             JOIN quizzes ON quizzes.id=users_quizzes.quiz_id                                JOIN questions ON questions.quiz_id=users_quizzes.quiz_id WHERE username='testuser'                                                                             GROUP BY users_quizzes.quiz_id, title, time_taken
+`
+
         // get list of quiz scores for quizzes this user has played
         const scoreResults = await db.query(`
-            SELECT quiz_id AS "quizId", score
+            SELECT
+                users_quizzes.quiz_id AS "quizId",
+                title,
+                last_score AS "lastScore",
+                best_score AS "bestScore",
+                time_taken AS "timeTaken",
+                COUNT(questions.id) AS "numQuestions"
             FROM users_quizzes
-            WHERE username = $1`,
+            JOIN quizzes
+                ON quizzes.id = users_quizzes.quiz_id
+            JOIN questions
+                ON questions.quiz_id = users_quizzes.quiz_id
+            WHERE username = $1
+            GROUP BY
+                users_quizzes.quiz_id,
+                title,
+                last_score,
+                best_score,
+                time_taken`,
             [username]);
-        user.scores = scoreResults.rows.map(s => ({ quizId: s.quizId, score: s.score }));
+        user.scores = scoreResults.rows.map(s => (
+            {
+                quizId: s.quizId,
+                title: s.title,
+                lastScore: s.lastScore,
+                bestScore: s.bestScore,
+                timeTaken: s.timeTaken,
+                numQuestions: s.numQuestions
+            }));
 
         return user;
     }
@@ -241,11 +270,21 @@ class User {
 
         if (!quiz) throw new NotFoundError(`No quiz found with id ${quizId}`);
 
+        // create a SQL-friendly timestamp from the current time
+        // source: https://stackoverflow.com/questions/5129624/convert-js-date-time-to-mysql-datetime
+        const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
         // create new entry in the join table
         await db.query(`
-            INSERT INTO users_quizzes (username, quiz_id, score)
-            VALUES ($1, $2, $3)`,
-            [username, quizId, score]);
+            INSERT INTO users_quizzes (
+                username,
+                quiz_id,
+                last_score,
+                best_score,
+                time_taken
+            )
+            VALUES ($1, $2, $3, $4, $5)`,
+            [username, quizId, score, score, timestamp]);
     }
 }
 

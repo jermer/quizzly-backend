@@ -96,7 +96,7 @@ VALUES ('How many sides does a triangle have?',
             333);
 
 -- sample quiz scores for testuser
-INSERT INTO users_quizzes (username, quiz_id, score)
-    VALUES ('testuser', 111, 5),
-           ('testuser', 222, 1),
-           ('testuser', 333, 3);
+INSERT INTO users_quizzes (username, quiz_id, last_score, best_score, time_taken)
+    VALUES ('testuser', 111, 5, 5, '1999-01-08 04:05:06'),
+           ('testuser', 222, 1, 2, '2004-10-19 10:23:54'),
+           ('testuser', 333, 3, 3, '2022-06-23 15:46:37');
