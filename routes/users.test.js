@@ -284,10 +284,29 @@ describe("POST /users/:username/quizzes/:quizId", function () {
             .send({ score: 4 })
             .set("authorization", `Bearer ${testAdminToken}`);
         expect(response.body).toEqual({
-            recorded: {
-                username: 'testuser',
+            score: {
                 quizId: quizIds[0],
-                score: 4
+                title: 'quiz one',
+                lastScore: 4,
+                bestScore: 4,
+                numQuestions: '3',
+                timeTaken: expect.any(String)
+            }
+        })
+
+        // make score update
+        response = await request(app)
+            .post(`/users/testuser/quizzes/${quizIds[0]}`)
+            .send({ score: 0 })
+            .set("authorization", `Bearer ${testAdminToken}`);
+        expect(response.body).toEqual({
+            score: {
+                quizId: quizIds[0],
+                title: 'quiz one',
+                lastScore: 0,
+                bestScore: 4,
+                numQuestions: '3',
+                timeTaken: expect.any(String)
             }
         })
     });
@@ -298,10 +317,29 @@ describe("POST /users/:username/quizzes/:quizId", function () {
             .send({ score: 4 })
             .set("authorization", `Bearer ${testUserToken}`);
         expect(response.body).toEqual({
-            recorded: {
-                username: 'testuser',
+            score: {
                 quizId: quizIds[0],
-                score: 4
+                title: 'quiz one',
+                lastScore: 4,
+                bestScore: 4,
+                numQuestions: '3',
+                timeTaken: expect.any(String)
+            }
+        })
+
+        // make score update
+        response = await request(app)
+            .post(`/users/testuser/quizzes/${quizIds[0]}`)
+            .send({ score: 0 })
+            .set("authorization", `Bearer ${testUserToken}`);
+        expect(response.body).toEqual({
+            score: {
+                quizId: quizIds[0],
+                title: 'quiz one',
+                lastScore: 0,
+                bestScore: 4,
+                numQuestions: '3',
+                timeTaken: expect.any(String)
             }
         })
     });

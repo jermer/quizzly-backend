@@ -140,11 +140,6 @@ class User {
             [username]);
         user.quizzes = quizResults.rows.map(q => q.id);
 
-
-        `
-SELECT users_quizzes.quiz_id, title, time_taken, count(questions.id) AS"num_questions" FROM users_quizzes                                             JOIN quizzes ON quizzes.id=users_quizzes.quiz_id                                JOIN questions ON questions.quiz_id=users_quizzes.quiz_id WHERE username='testuser'                                                                             GROUP BY users_quizzes.quiz_id, title, time_taken
-`
-
         // get list of quiz scores for quizzes this user has played
         const scoreResults = await db.query(`
             SELECT
@@ -250,6 +245,8 @@ SELECT users_quizzes.quiz_id, title, time_taken, count(questions.id) AS"num_ques
      */
 
     static async recordQuizScore(username, quizId, score) {
+        console.debug("Record score: quiz id", quizId, ", score", score);
+
         // check for valid username
         const userCheck = await db.query(`
             SELECT username
@@ -274,17 +271,70 @@ SELECT users_quizzes.quiz_id, title, time_taken, count(questions.id) AS"num_ques
         // source: https://stackoverflow.com/questions/5129624/convert-js-date-time-to-mysql-datetime
         const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-        // create new entry in the join table
-        await db.query(`
-            INSERT INTO users_quizzes (
-                username,
-                quiz_id,
+        // chech to see whether the user has already taken this quiz
+        const bestCheck = await db.query(`
+            SELECT best_score AS "bestScore"
+            FROM users_quizzes
+            WHERE
+                username = $1
+                AND
+                quiz_id = $2`,
+            [username, quizId]);
+
+        if (bestCheck.rows[0]) {
+            // this quiz has been taken, so update the entry
+            const bestScore = Math.max(bestCheck.rows[0].bestScore, score);
+
+            await db.query(`
+                UPDATE users_quizzes
+                SET
+                    last_score = $1,
+                    best_score = $2,
+                    time_taken = $3
+                WHERE
+                    username = $4
+                    AND
+                    quiz_id = $5`,
+                [score, bestScore, timestamp, username, quizId]);
+        } else {
+            // this quiz has not been taken, so create new entry
+            await db.query(`
+                INSERT INTO users_quizzes (
+                    username,
+                    quiz_id,
+                    last_score,
+                    best_score,
+                    time_taken
+                )
+                VALUES ($1, $2, $3, $4, $5)`,
+                [username, quizId, score, score, timestamp]);
+        }
+
+        // query to return the score report
+        const result = await db.query(`
+            SELECT
+                users_quizzes.quiz_id AS "quizId",
+                title,
+                last_score AS "lastScore",
+                best_score AS "bestScore",
+                time_taken AS "timeTaken",
+                COUNT(questions.id) AS "numQuestions"
+            FROM users_quizzes
+            JOIN quizzes
+                ON quizzes.id = users_quizzes.quiz_id
+            JOIN questions
+                ON questions.quiz_id = users_quizzes.quiz_id
+            WHERE username = $1 AND users_quizzes.quiz_id = $2
+            GROUP BY
+                users_quizzes.quiz_id,
+                title,
                 last_score,
                 best_score,
-                time_taken
-            )
-            VALUES ($1, $2, $3, $4, $5)`,
-            [username, quizId, score, score, timestamp]);
+                time_taken`,
+            [username, quizId]);
+
+        const scoreReport = result.rows[0];
+        return scoreReport;
     }
 }
 

@@ -111,8 +111,8 @@ router.post('/:username/quizzes/:quizId', ensureCorrectUserOrAdmin, async functi
         if (!Number.isInteger(score))
             throw new BadRequestError("Score must be an integer.");
 
-        await User.recordQuizScore(username, quizId, score);
-        return res.json({ recorded: { username, quizId, score } });
+        const scoreReport = await User.recordQuizScore(username, quizId, score);
+        return res.json({ score: scoreReport });
 
     } catch (err) {
         return next(err);
