@@ -245,7 +245,7 @@ class User {
      */
 
     static async recordQuizScore(username, quizId, score) {
-        console.debug("Record score: quiz id", quizId, ", score", score);
+        // console.debug("Record score: quiz id", quizId, ", score", score);
 
         // check for valid username
         const userCheck = await db.query(`

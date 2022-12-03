@@ -88,7 +88,7 @@ router.post("/register", async function (req, res, next) {
         }
 
         // add new user, will throw error if duplicate username
-        const user = await User.register(req.body);
+        const user = await User.register({ ...req.body, isAdmin: false });
 
         // if we've made it this far, all is well
         const token = createToken(user);
